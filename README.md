@@ -1,6 +1,6 @@
 # kare-admin
 
-> Kare administrator portal
+> Documentation portal
 
 ## Build Setup
 
