@@ -13,8 +13,8 @@
             voluptatibus aut animi, quas doloribus, itaque molestiae ipsum
             officia at natus mollitia iure?
           </h4>
-          <v-btn class="" color="#0087ff" outlined to="/user/apps" nuxt
-            ><v-icon>mdi-play</v-icon> See all your applications</v-btn
+          <v-btn class="" color="#0087ff" outlined to="/admin/usersview" nuxt
+            ><v-icon>mdi-play</v-icon> See all available users</v-btn
           >
         </v-col>
         <v-col cols="12" md="5" sm="6">

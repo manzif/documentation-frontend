@@ -151,25 +151,17 @@
                       <v-layout align-center justify-center>
                         <v-flex xs12 sm8>
                           <v-text-field
-                            v-model="email"
-                            :rules="emailRules"
-                            label="Email"
+                            v-model="firstname"
+                            :rules="[(v) => !!v || 'FirstName is required']"
+                            label="FirstName"
                             outlined
                             clearable
                             dense
                           ></v-text-field>
                           <v-text-field
-                            v-model="master"
-                            :rules="[(v) => !!v || 'Master is required']"
-                            label="Master"
-                            outlined
-                            clearable
-                            dense
-                          ></v-text-field>
-                          <v-text-field
-                            v-model="privilege"
-                            :rules="[(v) => !!v || 'Privilege is required']"
-                            label="privilege"
+                            v-model="lastname"
+                            :rules="[(v) => !!v || 'LastName is required']"
+                            label="LastName"
                             outlined
                             clearable
                             dense
@@ -177,25 +169,46 @@
                           <v-text-field
                             v-model="username"
                             :rules="[(v) => !!v || 'Username is required']"
-                            label="username"
+                            label="Username"
                             outlined
                             clearable
                             dense
                           ></v-text-field>
+                          <v-select
+                            v-model="role"
+                            :rules="[(v) => !!v || 'Type is required']"
+                            :items="typeItems"
+                            label="Type"
+                            dense
+                            outlined
+                          ></v-select>
+                          <v-text-field
+                            ref="email"
+                            v-model="email"
+                            :rules="emailRules"
+                            name="login"
+                            label="Email Address"
+                            type="text"
+                            outlined
+                            dense
+                            required
+                          />
                           <v-text-field
                             id="password"
                             ref="password"
-                            :rules="[(v) => !!v || 'Password is required']"
                             v-model="password"
+                            :rules="passwordRules"
                             :type="showPassword ? 'text' : 'password'"
                             :append-icon="
                               showPassword ? 'mdi-eye' : 'mdi-eye-off'
                             "
                             @click:append="showPassword = !showPassword"
-                            label="password"
-                            outlined
+                            name="Password"
+                            label="Password"
+                            required
                             dense
-                          ></v-text-field>
+                            outlined
+                          />
                         </v-flex>
                       </v-layout>
 
@@ -298,27 +311,21 @@
                             <v-layout align-center justify-center>
                               <v-flex xs12 sm8>
                                 <v-text-field
-                                  v-model="email"
-                                  :rules="emailRules"
-                                  label="Email"
-                                  outlined
-                                  clearable
-                                  dense
-                                ></v-text-field>
-                                <v-text-field
-                                  v-model="master"
-                                  :rules="[(v) => !!v || 'Master is required']"
-                                  label="Master"
-                                  outlined
-                                  clearable
-                                  dense
-                                ></v-text-field>
-                                <v-text-field
-                                  v-model="privilege"
+                                  v-model="firstname"
                                   :rules="[
-                                    (v) => !!v || 'Privilege is required'
+                                    (v) => !!v || 'FirstName is required'
                                   ]"
-                                  label="privilege"
+                                  label="FirstName"
+                                  outlined
+                                  clearable
+                                  dense
+                                ></v-text-field>
+                                <v-text-field
+                                  v-model="lastname"
+                                  :rules="[
+                                    (v) => !!v || 'LastName is required'
+                                  ]"
+                                  label="LastName"
                                   outlined
                                   clearable
                                   dense
@@ -328,12 +335,38 @@
                                   :rules="[
                                     (v) => !!v || 'Username is required'
                                   ]"
-                                  label="username"
+                                  label="Username"
                                   outlined
                                   clearable
                                   dense
-                                  class="mb-0"
                                 ></v-text-field>
+                                <v-text-field
+                                  ref="email"
+                                  v-model="email"
+                                  :rules="emailRules"
+                                  name="login"
+                                  label="Email Address"
+                                  type="text"
+                                  outlined
+                                  dense
+                                  required
+                                />
+                                <v-text-field
+                                  id="password"
+                                  ref="password"
+                                  v-model="password"
+                                  :rules="passwordRules"
+                                  :type="showPassword ? 'text' : 'password'"
+                                  :append-icon="
+                                    showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                                  "
+                                  @click:append="showPassword = !showPassword"
+                                  name="Password"
+                                  label="Password"
+                                  required
+                                  dense
+                                  outlined
+                                />
                               </v-flex>
                             </v-layout>
                             <v-divider></v-divider>
@@ -443,10 +476,11 @@ export default {
       dialogEdit: false,
       dialog1: false,
       username: '',
-      master: '',
+      firstname: '',
       showPassword: false,
-      privilege: '',
+      lastname: '',
       password: '',
+      typeItems: ['admin', 'developer'],
       email: '',
       emailRules: [
         (v) => !!v || 'E-mail is required',
@@ -527,7 +561,8 @@ export default {
           master: this.master,
           privilege: this.privilege,
           username: this.username,
-          password: this.password
+          password: this.password,
+          type: this.type
         }
         await this.$store.dispatch('users/editUser', {
           userData,
@@ -548,19 +583,21 @@ export default {
       try {
         const userData = {
           email: this.email,
-          master: this.master,
-          privilege: this.privilege,
+          firstname: this.firstname,
+          lastname: this.lastname,
           username: this.username,
-          password: this.password
+          password: this.password,
+          role: this.role
         }
-        await this.$store.dispatch('users/register', userData)
-        this.$store.dispatch('users/fetchUsers')
+        await this.$store.dispatch('users/registerUser', userData)
+        await this.$store.dispatch('users/fetchUsers')
         this.$store.dispatch('helper/isProgressLoader')
         this.dialog1 = false
         this.email = null
-        this.master = null
-        this.privilege = null
+        this.firstname = null
+        this.lastname = null
         this.username = null
+        this.role = null
         this.password = null
       } catch (e) {
         return e

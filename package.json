@@ -1,8 +1,7 @@
 {
   "name": "documentation",
   "version": "1.0.0",
-  "description": "Kare administrator portal",
-  "author": "ishimwefelix",
+  "author": "Manzi Fabrice",
   "private": true,
   "config": {
     "nuxt": {
