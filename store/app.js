@@ -84,12 +84,10 @@ export const actions = {
   },
   async deleteApp({ commit }, id) {
     try {
-      console.log('\n\n\n\n\n\n', id)
       const { data } = await this.$axios.delete(
         '/applications/applications',
         id
       )
-      console.log('\n\n\n\n\n', data)
       this.dispatch('app/fetchApps')
       this.dispatch('helper/showingMessage', {
         visible: true,

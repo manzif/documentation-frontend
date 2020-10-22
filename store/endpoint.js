@@ -57,17 +57,19 @@ export const actions = {
       return e
     }
   },
-  async createApp({ commit }, { title, description, userName, userId }) {
+  async createEndpoint({ commit }, { name, description, type, body, url }) {
     try {
-      const { data } = await this.$axios.post('applications', {
-        title,
+      const { data } = await this.$axios.post('endpoints', {
+        name,
         description,
-        userName,
-        userId
+        url,
+        body,
+        type
       })
-      if (data.message === 'Application successfully created') {
-        this.dispatch('app/fetchApps')
-        await this.$router.push('/view-apps')
+      console.log('\n\n\n\n\n', data)
+      if (data.message === 'Endpoint successfully created') {
+        this.dispatch('endpoint/fetchEndpoints')
+        await this.$router.push('/view-endpoints')
         this.dispatch('helper/showingMessage', {
           visible: true,
           type: 'success',

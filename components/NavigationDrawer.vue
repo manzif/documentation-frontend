@@ -7,7 +7,7 @@
       app
     >
       <v-list-item class="px-2">
-        <v-avatar size="65">
+        <v-avatar size="45">
           <img src="~/static/images/defaultProfile.png" alt="John" />
         </v-avatar>
 
@@ -108,7 +108,7 @@
               <v-list-item-title>Endpoints</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item to="/add-endpoints">
+          <v-list-item to="/endpoint-check">
             <v-list-item-content>
               <v-list-item-title>Add Endpoint</v-list-item-title>
             </v-list-item-content>

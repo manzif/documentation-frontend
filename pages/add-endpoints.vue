@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
+      <v-col cols="12" md="8" sm="8">
         <v-container grid-list-md>
           <v-card text class="pa-10">
             <v-form ref="form" v-model="isFormValid" :lazy-validation="lazy">
               <v-layout row wrap class="pa-5">
-                <v-flex xs12 md12 class="pb-3">
+                <v-flex xs12 sm12 md12 class="pb-3">
                   <h2 class="headline black--text pb-1 font-weight-bold">
                     Create Endpoint
                   </h2>
@@ -63,29 +63,29 @@
                   <div class="subtitle-1 grey--text pb-1">
                     Body
                   </div>
-                  <v-layout row wrap>
-                    <v-flex xs12 md5>
+                  <v-layout row v-for="row in rows" :key="row.id">
+                    <v-flex xs12 md6>
                       <v-text-field
-                        v-model="bodItem.party"
-                        :rules="[(v) => !!v || 'Url is required']"
+                        v-model="row.parameter"
+                        placeholder="Parameter"
                         dense
                         single-line
                         outlined
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 md5>
+                    <v-flex xs12 md6>
                       <v-text-field
-                        v-model="bodyItem.name"
-                        :rules="[(v) => !!v || 'Url is required']"
+                        v-model="row.value"
+                        placeholder="value"
                         dense
                         single-line
                         outlined
                       ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 md2>
-                      <v-btn outlined grey>Add</v-btn>
                     </v-flex>
                   </v-layout>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-btn outlined grey @click="addRow">Add New parameter</v-btn>
                 </v-flex>
                 <!-- <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
@@ -164,10 +164,14 @@
 export default {
   data: () => ({
     isFormValid: false,
-    callback: '',
-    bodyItem: {
-      name: '',
-      party: ''
+    body: '',
+    rows: [{ parameter: '', value: '' }],
+    bodyItem: '',
+    type: '',
+    bodyPlace: {
+      name: 'firstname',
+      lastname: 'manzi',
+      email: 'manzif60@gmail.com'
     },
     typeItems: [
       'GET',
@@ -184,11 +188,6 @@ export default {
     url: '',
     lazy: false
   }),
-  computed() {
-    body: {
-      this.bodyItem.name = this.bodyItem.party
-    }
-  },
   methods: {
     validate() {
       this.$refs.form.validate()
@@ -196,29 +195,35 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
+    addRow() {
+      console.log('\n\n\n\n', 'nahageze')
+      this.rows.push({ parameter: '', value: '' })
+    },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
-    createEndpoint() {
-      console.log('\n\n\n', this.body)
-      // this.$store.dispatch('helper/loading')
-      // this.$store.dispatch('helper/disabling')
-      // try {
-      //   await this.$store.dispatch('app/createApp', {
-      //     title: this.title,
-      //     userName: this.userName,
-      //     userId: this.userId,
-      //     description: this.description
-      //   })
-      //   this.$store.dispatch('helper/loading')
-      //   this.$store.dispatch('helper/disabling')
-      //   this.title = null
-      //   this.userId = null
-      //   this.userName = null
-      //   this.description = null
-      // } catch (e) {
-      //   return e
-      // }
+    async createEndpoint() {
+      this.$store.dispatch('helper/loading')
+      this.$store.dispatch('helper/disabling')
+      try {
+        console.log('\n\n\n\n\n', this.rows)
+        await this.$store.dispatch('endpoint/createEndpoint', {
+          name: this.name,
+          type: this.type,
+          body: this.rows,
+          url: this.url,
+          description: this.description
+        })
+        this.$store.dispatch('helper/loading')
+        this.$store.dispatch('helper/disabling')
+        this.name = null
+        this.type = null
+        this.url = null
+        this.body = null
+        this.description = null
+      } catch (e) {
+        return e
+      }
     }
   }
 }
