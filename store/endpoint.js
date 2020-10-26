@@ -57,14 +57,20 @@ export const actions = {
       return e
     }
   },
-  async createEndpoint({ commit }, { name, description, type, body, url }) {
+  async createEndpoint(
+    { commit },
+    { name, description, type, body, url, success, failure, query }
+  ) {
     try {
       const { data } = await this.$axios.post('endpoints', {
         name,
         description,
         url,
         body,
-        type
+        type,
+        success,
+        query,
+        failure
       })
       console.log('\n\n\n\n\n', data)
       if (data.message === 'Endpoint successfully created') {
