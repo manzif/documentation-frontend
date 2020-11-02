@@ -7,6 +7,9 @@
             Description
           </v-tab>
           <v-tab>
+            Headers
+          </v-tab>
+          <v-tab>
             Query
           </v-tab>
           <v-tab>
@@ -83,6 +86,39 @@
                     Curabitur ligula sapien, tincidunt non, euismod vitae,
                     posuere imperdiet, leo. Nunc sed turpis.
                   </p>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat class="v-tabs__content_test">
+              <v-layout row class="pa-5">
+                <v-flex xs12 md12>
+                  <v-layout row v-for="row in headers" :key="row.id">
+                    <v-flex xs12 md6>
+                      <v-text-field
+                        v-model="row.parameter"
+                        placeholder="Parameter"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <v-text-field
+                        v-model="row.value"
+                        placeholder="value"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-btn outlined grey @click="addHeaders"
+                    >Add New parameter</v-btn
+                  >
                 </v-flex>
               </v-layout>
             </v-card>
@@ -255,6 +291,7 @@
 export default {
   data: () => ({
     tab: null,
+    headers: [{ parameter: '', value: '' }],
     query: [{ parameter: '', value: '' }],
     bodies: [{ parameter: '', value: '' }],
     success: [{ parameter: '', value: '' }],
@@ -304,6 +341,9 @@ export default {
     addFailure() {
       this.failure.push({ parameter: '', value: '' })
     },
+    addHeaders() {
+      this.headers.push({ parameter: '', value: '' })
+    },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
@@ -315,6 +355,7 @@ export default {
           name: this.name,
           type: this.type,
           body: this.bodies,
+          headers: this.headers,
           query: this.query,
           success: this.success,
           failure: this.failure,
@@ -326,6 +367,7 @@ export default {
         this.name = null
         this.type = null
         this.url = null
+        this.headers = [{ parameter: '', value: '' }]
         this.bodies = [{ parameter: '', value: '' }]
         this.success = [{ parameter: '', value: '' }]
         this.failure = [{ parameter: '', value: '' }]

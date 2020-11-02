@@ -36,18 +36,7 @@
           <template v-slot:expanded-item="{ item }">
             <td :colspan="headers.length">
               <template>
-                <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="544">
-                  <v-list-item three-line>
-                    <v-list-item-content>
-                      <v-list-item-title class="headline mb-1"
-                        >Users Actions</v-list-item-title
-                      >
-                      <v-list-item-subtitle
-                        >The following are actions you can perform on this
-                        user</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
+                <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="380" flat>
                   <template>
                     <v-dialog v-model="dialogDelete" persistent max-width="390">
                       <template v-slot:activator="{ on }">
@@ -164,6 +153,15 @@
                         </v-card-text>
                       </v-card>
                     </v-dialog>
+                    <v-chip
+                      @click="goToAction(item)"
+                      class="ma-2"
+                      color="success"
+                      outlined
+                    >
+                      <v-icon left>mdi-pencil</v-icon>
+                      view
+                    </v-chip>
                   </template>
                 </v-card>
               </template>
@@ -244,7 +242,6 @@ export default {
       this.$store.dispatch('helper/loading')
       this.$store.dispatch('helper/disabling')
       try {
-        console.log('\n\n\n\n\n', id)
         await this.$store.dispatch('app/deleteApp', id)
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
@@ -299,6 +296,13 @@ export default {
       } catch (e) {
         return e
       }
+    },
+    goToAction(item) {
+      console.log(this)
+      this.$router.push({
+        name: 'view-one-endpoint',
+        params: { item }
+      })
     }
   }
 }

@@ -39,53 +39,13 @@
             </v-btn>
           </template>
           <UserDropdown />
-          <v-list shaped dense>
-            <v-subheader>App settings</v-subheader>
-            <v-list-item-group color="primary">
-              <v-list-item @click.stop="drawer = !drawer">
-                <v-list-item-title>
-                  <v-app-bar-nav-icon />
-                  Open/Collapse
-                </v-list-item-title>
-              </v-list-item>
-
-              <v-list-item @click.stop="miniVariant = !miniVariant">
-                <v-list-item-title>
-                  <v-btn icon>
-                    <v-icon
-                      >mdi-{{
-                        `chevron-${miniVariant ? 'right' : 'left'}`
-                      }}</v-icon
-                    >
-                  </v-btn>
-                  Open/Collapse
-                </v-list-item-title>
-              </v-list-item>
-              <v-list-item @click.stop="clipped = !clipped">
-                <v-list-item-title>
-                  <v-btn icon>
-                    <v-icon>mdi-application</v-icon>
-                  </v-btn>
-                  Open/Collapse
-                </v-list-item-title>
-              </v-list-item>
-              <v-list-item @click.stop="fixed = !fixed">
-                <v-list-item-title>
-                  <v-btn icon>
-                    <v-icon>mdi-minus</v-icon>
-                  </v-btn>
-                  Open/Collapse
-                </v-list-item-title>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
         </v-menu>
       </v-app-bar>
       <NavigationDrawer />
     </nav>
-    <v-content>
+    <v-main>
       <nuxt />
-    </v-content>
+    </v-main>
     <VFooter />
   </v-app>
 </template>
