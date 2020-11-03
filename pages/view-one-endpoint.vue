@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="8">
+      <v-col cols="12" md="10" sm="8">
         <v-container grid-list-md>
           <v-card text class="pa-10" flat>
             <v-layout row wrap class="pa-5">
@@ -89,17 +89,23 @@
                   <h3 class="pb-1">
                     {
                   </h3>
-                  <v-list-item
-                    v-for="(item, i) in itemsResponse"
-                    :key="i"
-                    class="px-6"
-                  >
-                    <v-list-item-content>
-                      <v-list-item-title
-                        >"content-type" : "Application/Json"</v-list-item-title
+                  <v-data-iterator :items="body" hide-default-footer>
+                    <template v-slot:default="props">
+                      <v-list-item
+                        v-for="item in props.items"
+                        :key="item.key"
+                        class="px-6"
                       >
-                    </v-list-item-content>
-                  </v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title
+                            >"{{ item.parameter }}" : "{{
+                              item.value
+                            }}"</v-list-item-title
+                          >
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-data-iterator>
                   <h3>
                     }
                   </h3>
@@ -129,13 +135,41 @@
                         :key="item.name"
                         class="px-6"
                       >
-                        <v-list-item-content>
-                          <v-list-item-title
-                            >"{{ item.parameter }}" : "{{
-                              item.value
-                            }}"</v-list-item-title
+                        <v-list-item-icon>
+                          "{{ item.parameter }}":
+                        </v-list-item-icon>
+                        <div v-if="typeof item.value === 'string'">
+                          <v-list-item-content>
+                            <v-list-item-title
+                              >"{{ item.value }}"</v-list-item-title
+                            >
+                          </v-list-item-content>
+                        </div>
+                        <div v-else>
+                          <v-data-iterator
+                            :items="item.value"
+                            hide-default-footer
                           >
-                        </v-list-item-content>
+                            <template v-slot:default="props">
+                              <h3 class="pt-4">
+                                {
+                              </h3>
+                              <v-list-item-content
+                                v-for="item in props.items"
+                                :key="item.key"
+                              >
+                                <v-list-item-title
+                                  >"{{ item.parameter }}" : "{{
+                                    item.value
+                                  }}"</v-list-item-title
+                                >
+                              </v-list-item-content>
+                              <h3 class="pb-1">
+                                }
+                              </h3>
+                            </template>
+                          </v-data-iterator>
+                        </div>
                       </v-list-item>
                     </template>
                   </v-data-iterator>
@@ -194,23 +228,9 @@ export default {
     query: [],
     url: '',
     headers: [],
+    body: [],
     success: [],
-    failure: [],
-    items: [{ text: 'Real-Time', icon: 'mdi-star-four-points' }],
-    itemsResponse: [
-      {
-        text: 'Real-Time',
-        icon: 'mdi-star-four-points'
-      },
-      {
-        text: 'Real',
-        icon: 'mdi-star-four-points'
-      },
-      {
-        text: 'Time',
-        icon: 'mdi-star-four-points'
-      }
-    ]
+    failure: []
   }),
   created() {
     if (this.$route.params.item === undefined) {
@@ -224,6 +244,7 @@ export default {
       this.success = this.$route.params.item.success
       this.failure = this.$route.params.item.failure
       this.query = this.$route.params.item.query
+      this.body = this.$route.params.item.body
       console.log('\n\n\n\n\n\n', this.$route.params.item.query)
     }
   }
