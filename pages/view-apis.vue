@@ -2,7 +2,7 @@
   <v-container fluid grid-list-md>
     <div class="mb-7 users-center">
       <v-btn class="disable-events" text dark x-large color="#0087ff">
-        Apps Overview
+        Apis Overview
         <v-icon right>fa-angle-down</v-icon></v-btn
       >
     </div>
@@ -10,7 +10,7 @@
       <div class="mx-md-12">
         <v-data-table
           :headers="headers"
-          :items="allApps"
+          :items="allApis"
           :single-expand="true"
           :expanded.sync="expanded"
           :search="search"
@@ -20,7 +20,7 @@
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
-              <v-toolbar-title>{{ totalApp }} Apps</v-toolbar-title>
+              <v-toolbar-title>{{ totalApi }} Apis</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <v-text-field
@@ -36,7 +36,7 @@
           <template v-slot:expanded-item="{ item }">
             <td :colspan="headers.length">
               <template>
-                <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="280" flat>
+                <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="380" flat>
                   <template>
                     <v-dialog v-model="dialogDelete" persistent max-width="390">
                       <template v-slot:activator="{ on }">
@@ -47,16 +47,16 @@
                           outlined
                           pill
                         >
-                          App Delete
+                          Api Delete
                           <v-icon right>mdi-delete</v-icon>
                         </v-chip>
                       </template>
                       <v-card>
                         <v-card-title class="headline"
-                          >Delete {{ item.title }}</v-card-title
+                          >Delete {{ item.name }}</v-card-title
                         >
                         <v-card-text
-                          >Are you sure you want to delete this App</v-card-text
+                          >Are you sure you want to delete this Api</v-card-text
                         >
                         <v-card-actions>
                           <v-spacer></v-spacer>
@@ -64,7 +64,7 @@
                             >Cancel</v-btn
                           >
                           <v-btn
-                            @click="deleteApp(item.id)"
+                            @click="deleteApi(item.id)"
                             :loading="isLoading"
                             :disabled="isDisabled"
                             color="success"
@@ -99,25 +99,41 @@
                             <v-layout align-center justify-center>
                               <v-flex xs12 sm8>
                                 <v-text-field
-                                  v-model="title"
-                                  label="Title"
+                                  v-model="email"
+                                  :rules="emailRules"
+                                  label="Email"
                                   outlined
                                   clearable
                                   dense
                                 ></v-text-field>
                                 <v-text-field
-                                  v-model="description"
-                                  label="Description"
+                                  v-model="master"
+                                  :rules="[(v) => !!v || 'Master is required']"
+                                  label="Master"
                                   outlined
                                   clearable
                                   dense
                                 ></v-text-field>
                                 <v-text-field
-                                  v-model="owner"
-                                  label="Owner"
+                                  v-model="privilege"
+                                  :rules="[
+                                    (v) => !!v || 'Privilege is required'
+                                  ]"
+                                  label="privilege"
                                   outlined
                                   clearable
                                   dense
+                                ></v-text-field>
+                                <v-text-field
+                                  v-model="username"
+                                  :rules="[
+                                    (v) => !!v || 'Username is required'
+                                  ]"
+                                  label="username"
+                                  outlined
+                                  clearable
+                                  dense
+                                  class="mb-0"
                                 ></v-text-field>
                               </v-flex>
                             </v-layout>
@@ -137,6 +153,15 @@
                         </v-card-text>
                       </v-card>
                     </v-dialog>
+                    <v-chip
+                      @click="goToAction(item)"
+                      class="ma-2"
+                      color="success"
+                      outlined
+                    >
+                      <v-icon left>mdi-pencil</v-icon>
+                      view
+                    </v-chip>
                   </template>
                 </v-card>
               </template>
@@ -152,36 +177,47 @@ export default {
   data() {
     return {
       search: '',
+      reason: '',
       isFormValid: false,
       Delete: 'Delete',
+      description: 'are you sure you want to delete this user',
       dialogEdit: false,
       dialog1: false,
+      username: '',
+      master: '',
+      showPassword: false,
+      privilege: '',
+      application: '',
+      password: '',
+      email: '',
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        (v) => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
       dialogDelete: false,
-      title: '',
-      owner: '',
-      description: '',
       expanded: [],
       singleExpand: false,
       headers: [
         {
-          text: 'Title',
+          text: 'Name',
           align: 'start',
           sortable: false,
-          value: 'title'
+          value: 'name'
         },
+        { text: 'Type', value: 'type' },
         { text: 'Description', value: 'description' },
-        { text: 'Owner', value: 'userName' },
+        { text: 'Url', value: 'url' },
         { text: 'Created At', value: 'createdAt' },
         { text: '', value: 'data-table-expand' }
       ]
     }
   },
   computed: {
-    allApps() {
-      return this.$store.getters['app/allApps']
+    allApis() {
+      return this.$store.getters['api/allApis']
     },
-    totalApp() {
-      return this.$store.getters['app/totalApp']
+    totalApi() {
+      return this.$store.getters['api/totalApi']
     },
     isProgressLoader() {
       return this.$store.getters['helper/isProgressLoader']
@@ -195,19 +231,17 @@ export default {
   },
   created() {
     try {
-      if (this.allApps.length === 0) {
-        this.$store.dispatch('app/fetchApps')
-      }
+      this.$store.dispatch('api/fetchApis')
     } catch (e) {
       return e
     }
   },
   methods: {
-    async deleteApp(id) {
+    async deleteApi(id) {
       this.$store.dispatch('helper/loading')
       this.$store.dispatch('helper/disabling')
       try {
-        await this.$store.dispatch('app/deleteApp', id)
+        await this.$store.dispatch('api/deleteApi', id)
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
         this.dialogDelete = false
@@ -215,52 +249,11 @@ export default {
         return e
       }
     },
-    async editUser(id) {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        const userData = {
-          email: this.email,
-          master: this.master,
-          privilege: this.privilege,
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('users/editUser', {
-          userData,
-          id
-        })
-        this.$store.dispatch('helper/isProgressLoader')
-        this.dialogEdit = false
-        this.email = null
-        this.master = null
-        this.privilege = null
-        this.username = null
-      } catch (e) {
-        return e
-      }
-    },
-    async registerUser() {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        const userData = {
-          email: this.email,
-          master: this.master,
-          privilege: this.privilege,
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('users/register', userData)
-        this.$store.dispatch('users/fetchUsers')
-        this.$store.dispatch('helper/isProgressLoader')
-        this.dialog1 = false
-        this.email = null
-        this.master = null
-        this.privilege = null
-        this.username = null
-        this.password = null
-      } catch (e) {
-        return e
-      }
+    goToAction(item) {
+      this.$router.push({
+        name: 'view-one-endpoint',
+        params: { item }
+      })
     }
   }
 }

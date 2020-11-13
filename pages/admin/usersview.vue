@@ -234,18 +234,7 @@
           <template v-slot:expanded-item="{ item }">
             <td :colspan="headers.length">
               <template>
-                <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="544">
-                  <v-list-item three-line>
-                    <v-list-item-content>
-                      <v-list-item-title class="headline mb-1"
-                        >Users Actions</v-list-item-title
-                      >
-                      <v-list-item-subtitle
-                        >The following are actions you can perform on this
-                        user</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
+                <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="284" flat>
                   <template>
                     <v-dialog v-model="dialogDelete" persistent max-width="390">
                       <template v-slot:activator="{ on }">
@@ -385,74 +374,6 @@
                         </v-card-text>
                       </v-card>
                     </v-dialog>
-                    <v-dialog v-model="dialogBlock" max-width="500px">
-                      <template v-slot:activator="{ on }">
-                        <span v-if="item.isActive === true">
-                          <v-btn v-on="on" outlined rounded color="red">
-                            Block<v-icon right>fa-ban</v-icon>
-                          </v-btn>
-                        </span>
-                        <span v-else>
-                          <v-btn
-                            v-on="on"
-                            outlined
-                            rounded
-                            disabled
-                            color="red"
-                          >
-                            Block<v-icon right>fa-ban</v-icon>
-                          </v-btn>
-                        </span>
-                      </template>
-                      <v-card>
-                        <v-toolbar elevation="250" class="mb-8">
-                          <v-spacer />
-                          <h3>Block this Transaction</h3>
-                          <v-progress-linear
-                            :active="isProgressLoader"
-                            :indeterminate="isProgressLoader"
-                            absolute
-                            bottom
-                            color="primary"
-                          ></v-progress-linear>
-                          <v-spacer />
-                        </v-toolbar>
-                        <v-spacer></v-spacer>
-                        <v-card-text class="pb-0">
-                          <v-form v-model="isFormValid">
-                            <v-layout align-center justify-center>
-                              <v-flex xs12 sm8>
-                                <v-text-field
-                                  v-model="reason"
-                                  :rules="[(v) => !!v || 'Reason is required']"
-                                  label="Reason"
-                                  outlined
-                                  clearable
-                                  dense
-                                ></v-text-field>
-                              </v-flex>
-                            </v-layout>
-                            <v-divider></v-divider>
-                            <v-card-actions class="justify-center">
-                              <v-btn @click="dialogBlock = false" color="cancel"
-                                >Cancel</v-btn
-                              >
-                              <v-btn
-                                @click="blockUser(item._id)"
-                                :disabled="!isFormValid"
-                                color="success"
-                                >Save</v-btn
-                              >
-                            </v-card-actions>
-                          </v-form>
-                        </v-card-text>
-                      </v-card>
-                    </v-dialog>
-
-                    <v-chip class="ma-2" color="indigo darken-3" outlined>
-                      <v-icon left>mdi-fire</v-icon>
-                      Reverse
-                    </v-chip>
                   </template>
                 </v-card>
               </template>

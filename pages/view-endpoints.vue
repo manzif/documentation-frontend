@@ -2,7 +2,7 @@
   <v-container fluid grid-list-md>
     <div class="mb-7 users-center">
       <v-btn class="disable-events" text dark x-large color="#0087ff">
-        Endpoints Overview
+        Apis Overview
         <v-icon right>fa-angle-down</v-icon></v-btn
       >
     </div>
@@ -20,7 +20,7 @@
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
-              <v-toolbar-title>{{ totalEndpoint }} Endpoints</v-toolbar-title>
+              <v-toolbar-title>{{ totalEndpoint }} APIs</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <v-text-field
@@ -47,7 +47,7 @@
                           outlined
                           pill
                         >
-                          App Delete
+                          API Delete
                           <v-icon right>mdi-delete</v-icon>
                         </v-chip>
                       </template>
@@ -64,7 +64,7 @@
                             >Cancel</v-btn
                           >
                           <v-btn
-                            @click="deleteApp(item.id)"
+                            @click="deleteApi(item.id)"
                             :loading="isLoading"
                             :disabled="isDisabled"
                             color="success"
@@ -77,7 +77,7 @@
                       <template v-slot:activator="{ on }">
                         <v-chip v-on="on" class="ma-2" color="success" outlined>
                           <v-icon left>mdi-pencil</v-icon>
-                          App Edit
+                          Api Edit
                         </v-chip>
                       </template>
                       <v-card>
@@ -142,12 +142,7 @@
                               <v-btn @click="dialogEdit = false" color="cancel">
                                 Cancel</v-btn
                               >
-                              <v-btn
-                                @click="editUser(item._id)"
-                                :disabled="!isFormValid"
-                                color="success"
-                                >Save</v-btn
-                              >
+                              <v-btn color="success">Save</v-btn>
                             </v-card-actions>
                           </v-form>
                         </v-card-text>
@@ -166,6 +161,11 @@
                 </v-card>
               </template>
             </td>
+          </template>
+          <template v-slot:no-data>
+            <v-btn color="primary" class="disable-events"
+              >There is no any API for the selected application</v-btn
+            >
           </template>
         </v-data-table>
       </div>
@@ -187,6 +187,7 @@ export default {
       master: '',
       showPassword: false,
       privilege: '',
+      application: '',
       password: '',
       email: '',
       emailRules: [
@@ -228,21 +229,12 @@ export default {
       return this.$store.getters['helper/isDisabled']
     }
   },
-  created() {
-    try {
-      if (this.allEndpoints.length === 0) {
-        this.$store.dispatch('endpoint/fetchEndpoints')
-      }
-    } catch (e) {
-      return e
-    }
-  },
   methods: {
-    async deleteApp(id) {
+    async deleteApi(id) {
       this.$store.dispatch('helper/loading')
       this.$store.dispatch('helper/disabling')
       try {
-        await this.$store.dispatch('app/deleteApp', id)
+        await this.$store.dispatch('endpoint/deleteApi', id)
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
         this.dialogDelete = false
@@ -250,55 +242,7 @@ export default {
         return e
       }
     },
-    async editUser(id) {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        const userData = {
-          email: this.email,
-          master: this.master,
-          privilege: this.privilege,
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('users/editUser', {
-          userData,
-          id
-        })
-        this.$store.dispatch('helper/isProgressLoader')
-        this.dialogEdit = false
-        this.email = null
-        this.master = null
-        this.privilege = null
-        this.username = null
-      } catch (e) {
-        return e
-      }
-    },
-    async registerUser() {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        const userData = {
-          email: this.email,
-          master: this.master,
-          privilege: this.privilege,
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('users/register', userData)
-        this.$store.dispatch('users/fetchUsers')
-        this.$store.dispatch('helper/isProgressLoader')
-        this.dialog1 = false
-        this.email = null
-        this.master = null
-        this.privilege = null
-        this.username = null
-        this.password = null
-      } catch (e) {
-        return e
-      }
-    },
     goToAction(item) {
-      console.log(this)
       this.$router.push({
         name: 'view-one-endpoint',
         params: { item }

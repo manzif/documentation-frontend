@@ -57,15 +57,6 @@
                 single-line
                 outlined
               ></v-text-field>
-              <v-text-field
-                v-model="userId"
-                :rules="[(v) => !!v || 'userId is required']"
-                label="UserId"
-                required
-                dense
-                single-line
-                outlined
-              ></v-text-field>
             </v-flex>
             <v-flex xs12 md12>
               <v-btn
@@ -90,6 +81,7 @@ export default {
       title: '',
       userName: '',
       isFormValid: false,
+      lazy: false,
       description: '',
       userId: ''
     }
@@ -110,13 +102,11 @@ export default {
         await this.$store.dispatch('app/createApp', {
           title: this.title,
           userName: this.userName,
-          userId: this.userId,
           description: this.description
         })
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
         this.title = null
-        this.userId = null
         this.userName = null
         this.description = null
       } catch (e) {

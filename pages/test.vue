@@ -1,98 +1,82 @@
 <template>
-  <v-container fluid>
-    <v-data-iterator
-      :items="items"
-      :items-per-page.sync="itemsPerPage"
-      hide-default-footer
+  <v-container>
+    <v-data-table
+      :headers="headersBro"
+      :items="desserts"
+      :pagination.sync="pagination"
+      :total-items="totalpatients"
+      :loading="loading"
+      no-data-text="No patients in this registry"
+      class="dataTable elevation-3"
     >
-      <template v-slot:default="props">
-        <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <v-card>
-              <v-card-title class="subheading font-weight-bold">
-                {{ item.name }}
-              </v-card-title>
-
-              <v-divider></v-divider>
-
-              <v-list dense>
-                <v-list-item>
-                  <v-list-item-content>Calories:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.calories }}
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Fat:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.fat }}
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Carbs:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.carbs }}
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Protein:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.protein }}
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Sodium:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.sodium }}
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Calcium:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.calcium }}
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Iron:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.iron }}
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
+      <template v-slot:items="props">
+        <tr
+          @click="
+            $router.push({ name: 'patient', params: { id: props.item.id } })
+          "
+          class="row"
+          :key="props.index"
+        >
+          <td class="text-xs-left">
+            {{ props.item.lastName }}, {{ props.item.firstName }}
+          </td>
+          <td class="text-xs-center">{{ props.item.mrn }}</td>
+        </tr>
       </template>
-    </v-data-iterator>
+    </v-data-table>
   </v-container>
 </template>
 <script>
 export default {
   data: () => ({
-    itemsPerPage: 4,
-    items: [
+    headersBro: [
+      {
+        text: 'Parameter',
+        align: 'start',
+        value: 'name'
+      },
+      { text: 'Values', value: 'calories' }
+    ],
+    desserts: [
       {
         name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        sodium: 87,
-        calcium: '14%',
-        iron: '1%'
+        calories: 159
+      },
+      {
+        name: 'Ice cream sandwich',
+        calories: 237
+      },
+      {
+        name: 'Eclair',
+        calories: 262
+      },
+      {
+        name: 'Cupcake',
+        calories: 305
+      },
+      {
+        name: 'Gingerbread',
+        calories: 356
+      },
+      {
+        name: 'Jelly bean',
+        calories: 375
+      },
+      {
+        name: 'Lollipop',
+        calories: 392
+      },
+      {
+        name: 'Honeycomb',
+        calories: 408
+      },
+      {
+        name: 'Donut',
+        calories: 452
+      },
+      {
+        name: 'KitKat',
+        calories: 518
       }
     ]
   })

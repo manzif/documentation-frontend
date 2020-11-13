@@ -96,26 +96,35 @@
               <v-list-item-title>Create App</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item
+            v-for="item in allApps"
+            :key="item.title"
+            @click="goToAction(item.id)"
+          >
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item to="/view-apps">
             <v-list-item-content>
-              <v-list-item-title>View Apps</v-list-item-title>
+              <v-list-item-title>View all App</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <v-list-group prepend-icon="fa-fast-forward" no-action>
+        <v-list-group prepend-icon="mdi-all-inclusive" no-action>
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>Endpoints</v-list-item-title>
+              <v-list-item-title>General</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item to="/endpoint-check">
+          <v-list-item to="/add-apis">
             <v-list-item-content>
-              <v-list-item-title>Add Endpoint</v-list-item-title>
+              <v-list-item-title>Add Api</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item to="/view-endpoints">
+          <v-list-item to="/view-apis">
             <v-list-item-content>
-              <v-list-item-title>View Endpoints</v-list-item-title>
+              <v-list-item-title>View Apis</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -126,6 +135,7 @@
 
 <script>
 export default {
+  name: 'NavigationDrawer',
   data() {
     return {
       drawer: true,
@@ -141,6 +151,27 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['users/loggedInUser']
+    },
+    allApps() {
+      return this.$store.getters['app/allApps']
+    }
+  },
+  created() {
+    try {
+      if (this.allApps.length === 0) {
+        this.$store.dispatch('app/fetchApps')
+      }
+    } catch (e) {
+      return e
+    }
+  },
+  methods: {
+    async goToAction(applicationId) {
+      await this.$store.dispatch('endpoint/fetchEndpoints', applicationId)
+      this.$router.push({
+        name: 'app-admin',
+        params: { applicationId }
+      })
     }
   }
 }

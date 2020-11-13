@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="8">
+      <v-col cols="12" md="8" sm="10">
         <v-container grid-list-md>
           <v-card text class="pa-7">
             <v-form ref="form" v-model="isFormValid" :lazy-validation="lazy">
               <v-layout row wrap class="pa-5">
                 <v-flex xs12 sm12 md12 class="pb-3">
                   <h2 class="headline black--text pb-1 font-weight-bold">
-                    Create API
+                    Create General API
                   </h2>
                   <div class="line"></div>
                 </v-flex>
@@ -247,8 +247,7 @@
                 <v-flex xs12 12>
                   <v-btn
                     :disabled="!isFormValid"
-                    :loading="isLoading"
-                    @click="createEndpoint"
+                    @click="createApi"
                     color="primary"
                     block
                     >Save</v-btn
@@ -270,10 +269,10 @@ export default {
     query: [{ parameter: '', value: '' }],
     body: '',
     rows: [{ parameter: '', value: '' }],
-    bodyItem: '',
     bodyDescription: [{ parameter: '', value: '' }],
     successDescription: [{ parameter: '', value: '' }],
     failureDescription: [{ parameter: '', value: '' }],
+    bodyItem: '',
     type: '',
     failure: '',
     bodyPlace: JSON.stringify(
@@ -329,12 +328,11 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
-    async createEndpoint() {
+    async createApi() {
       this.$store.dispatch('helper/loading')
       this.$store.dispatch('helper/disabling')
       try {
-        const applicationId = this.$route.params.applicationId
-        await this.$store.dispatch('endpoint/createEndpoint', {
+        await this.$store.dispatch('api/createApi', {
           name: this.name,
           type: this.type,
           body: this.body,
@@ -346,8 +344,7 @@ export default {
           failure: this.failure,
           headers: this.headers,
           query: this.query,
-          description: this.description,
-          applicationId
+          description: this.description
         })
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')

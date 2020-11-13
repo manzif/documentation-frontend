@@ -17,17 +17,16 @@
               </v-flex>
               <v-flex xs12 sm12 md12 class="pb-3">
                 <h2 class="headline black--text pb-1 font-weight-bold">
-                  https://app.mcash.rw/electricity/getMeterNumberDetails.php :
-                  GET
+                  {{ url }} : {{ type }}
                 </h2>
                 <v-divider></v-divider>
               </v-flex>
-              <v-flex v-if="headers" xs12 sm12 md12 class="pb-1">
+              <v-flex v-if="headers[0].parameter" xs12 sm12 md12 class="pb-1">
                 <h3 class="pb-1">
                   Headers
                 </h3>
               </v-flex>
-              <v-flex v-if="headers" xs12 sm12 md12 class="pb-3">
+              <v-flex v-if="headers[0].parameter" xs12 sm12 md12 class="pb-3">
                 <v-data-iterator :items="headers" hide-default-footer>
                   <template v-slot:default="props">
                     <v-list-item
@@ -47,37 +46,28 @@
                   </template>
                 </v-data-iterator>
               </v-flex>
-              <v-flex v-if="query" xs12 sm12 md12 class="pb-1">
+              <v-flex v-if="query[0].parameter" xs12 sm12 md12 class="pb-1">
                 <h3 class="pb-1">
                   Query Params
                 </h3>
               </v-flex>
-              <v-flex v-if="query" xs12 sm12 md12 class="pb-3">
-                <v-card color="#385F73" dark class="pa-5">
-                  <h3 class="pb-1">
-                    {
-                  </h3>
-                  <v-data-iterator :items="query" hide-default-footer>
-                    <template v-slot:default="props">
-                      <v-list-item
-                        v-for="item in props.items"
-                        :key="item.name"
-                        class="px-6"
-                      >
-                        <v-list-item-content>
-                          <v-list-item-title
-                            >"{{ item.parameter }}" : "{{
-                              item.value
-                            }}"</v-list-item-title
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                  </v-data-iterator>
-                  <h3>
-                    }
-                  </h3>
-                </v-card>
+              <v-flex
+                v-if="query[0].parameter !== null"
+                xs12
+                sm12
+                md12
+                class="pb-3"
+              >
+                <template>
+                  <v-data-table
+                    :headers="headersQuery"
+                    :items="query"
+                    :items-per-page="5"
+                    hide-default-footer
+                    item-key="name"
+                    class="elevation-2"
+                  ></v-data-table>
+                </template>
               </v-flex>
               <v-flex v-if="body" xs12 sm12 md12 class="pb-1">
                 <h3 class="pb-1">
@@ -85,31 +75,46 @@
                 </h3>
               </v-flex>
               <v-flex v-if="body" xs12 sm12 md12 class="pb-3">
-                <v-card color="#385F73" dark class="pa-5">
-                  <h3 class="pb-1">
-                    {
-                  </h3>
-                  <v-data-iterator :items="body" hide-default-footer>
-                    <template v-slot:default="props">
-                      <v-list-item
-                        v-for="item in props.items"
-                        :key="item.key"
-                        class="px-6"
-                      >
-                        <v-list-item-content>
-                          <v-list-item-title
-                            >"{{ item.parameter }}" : "{{
-                              item.value
-                            }}"</v-list-item-title
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                  </v-data-iterator>
-                  <h3>
-                    }
-                  </h3>
+                <v-card color="#385F73" dark class="px-5 pt-5 pb-0">
+                  <v-textarea
+                    id="custom-placeholer-color"
+                    :placeholder="body"
+                    filled
+                    disabled
+                    auto-grow
+                    single-line
+                    outlined
+                  ></v-textarea>
                 </v-card>
+              </v-flex>
+              <v-flex
+                v-if="bodyDescription[0].parameter"
+                xs12
+                sm12
+                md12
+                class="pb-1"
+              >
+                <h3 class="pb-1">
+                  Body Data Description
+                </h3>
+              </v-flex>
+              <v-flex
+                v-if="bodyDescription[0].parameter"
+                xs12
+                sm12
+                md12
+                class="pb-3"
+              >
+                <template>
+                  <v-data-table
+                    :headers="headersDescrition"
+                    :items="bodyDescription"
+                    :items-per-page="5"
+                    hide-default-footer
+                    item-key="name"
+                    class="elevation-2"
+                  ></v-data-table>
+                </template>
               </v-flex>
               <v-flex xs12 sm12 md12 class="pb-3">
                 <h2 class="headline black--text pb-1 font-weight-bold">
@@ -119,97 +124,99 @@
               </v-flex>
               <v-flex v-if="success" xs12 sm12 md12>
                 <p>
-                  if the request was sucessfull you will receive response
+                  if the request was successfull you will receive response
                   similar to these below
                 </p>
               </v-flex>
               <v-flex v-if="success" xs12 sm12 md12 class="pb-3">
-                <v-card color="#385F73" dark class="pa-5">
-                  <h3 class="pb-1">
-                    {
-                  </h3>
-                  <v-data-iterator :items="success" hide-default-footer>
-                    <template v-slot:default="props">
-                      <v-list-item
-                        v-for="item in props.items"
-                        :key="item.name"
-                        class="px-6"
-                      >
-                        <v-list-item-icon>
-                          "{{ item.parameter }}":
-                        </v-list-item-icon>
-                        <div v-if="typeof item.value === 'string'">
-                          <v-list-item-content>
-                            <v-list-item-title
-                              >"{{ item.value }}"</v-list-item-title
-                            >
-                          </v-list-item-content>
-                        </div>
-                        <div v-else>
-                          <v-data-iterator
-                            :items="item.value"
-                            hide-default-footer
-                          >
-                            <template v-slot:default="props">
-                              <h3 class="pt-4">
-                                {
-                              </h3>
-                              <v-list-item-content
-                                v-for="item in props.items"
-                                :key="item.key"
-                              >
-                                <v-list-item-title
-                                  >"{{ item.parameter }}" : "{{
-                                    item.value
-                                  }}"</v-list-item-title
-                                >
-                              </v-list-item-content>
-                              <h3 class="pb-1">
-                                }
-                              </h3>
-                            </template>
-                          </v-data-iterator>
-                        </div>
-                      </v-list-item>
-                    </template>
-                  </v-data-iterator>
-                  <h3>
-                    }
-                  </h3>
+                <v-card color="#385F73" dark class="px-5 pt-5 pb-0">
+                  <v-textarea
+                    id="custom-placeholer-color"
+                    :placeholder="success"
+                    filled
+                    disabled
+                    auto-grow
+                    single-line
+                    outlined
+                  ></v-textarea>
                 </v-card>
+              </v-flex>
+              <v-flex
+                v-if="successDescription[0].parameter"
+                xs12
+                sm12
+                md12
+                class="pb-1"
+              >
+                <h3 class="pb-1">
+                  Success Data Description
+                </h3>
+              </v-flex>
+              <v-flex
+                v-if="successDescription[0].parameter"
+                xs12
+                sm12
+                md12
+                class="pb-3"
+              >
+                <template>
+                  <v-data-table
+                    :headers="headersDescrition"
+                    :items="successDescription"
+                    :items-per-page="5"
+                    hide-default-footer
+                    item-key="name"
+                    class="elevation-2"
+                  ></v-data-table>
+                </template>
               </v-flex>
               <v-flex v-if="failure" xs12 sm12 md12>
                 <p>
-                  if the request was not sucessfull you will receive response
+                  if the request was not successfull you will receive response
                   similar to these below
                 </p>
               </v-flex>
               <v-flex v-if="failure" xs12 sm12 md12 class="pb-3">
-                <v-card color="#385F73" dark class="pa-5">
-                  <h3 class="pb-1">
-                    {
-                  </h3>
-                  <v-data-iterator :items="failure" hide-default-footer>
-                    <template v-slot:default="props">
-                      <v-list-item
-                        v-for="item in props.items"
-                        :key="item.name"
-                        class="px-6"
-                      >
-                        <v-list-item-content>
-                          <v-list-item-title
-                            >"{{ item.parameter }}" : "{{
-                              item.value
-                            }}"</v-list-item-title
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                  </v-data-iterator>
-                  <h3>
-                    }
-                  </h3>
+                <v-card color="#385F73" dark class="px-5 pt-5 pb-0">
+                  <v-textarea
+                    id="custom-placeholer-color"
+                    :placeholder="failure"
+                    filled
+                    disabled
+                    auto-grow
+                    single-line
+                    outlined
+                  ></v-textarea>
                 </v-card>
+              </v-flex>
+              <v-flex
+                v-if="failureDescription[0].parameter"
+                xs12
+                sm12
+                md12
+                class="pb-1"
+              >
+                <h3 class="pb-1">
+                  Failure Data Description
+                </h3>
+              </v-flex>
+              <v-flex
+                v-if="failureDescription[0].parameter"
+                xs12
+                sm12
+                md12
+                class="pb-3"
+              >
+                <template>
+                  <v-data-table
+                    :headers="headersDescrition"
+                    :items="failureDescription"
+                    :items-per-page="5"
+                    hide-default-footer
+                    item-key="name"
+                    class="elevation-2"
+                  ></v-data-table>
+                </template>
               </v-flex>
             </v-layout>
           </v-card>
@@ -224,13 +231,32 @@ export default {
   data: () => ({
     name: '',
     description: '',
-    type: '',
-    query: [],
+    headersQuery: [
+      {
+        text: 'Parameter',
+        align: 'start',
+        value: 'parameter'
+      },
+      { text: 'Values', value: 'value' }
+    ],
+    headersDescrition: [
+      {
+        text: 'Parameter',
+        align: 'start',
+        value: 'parameter'
+      },
+      { text: 'Data Type', value: 'value' }
+    ],
+    query: [{ parameter: '', value: '' }],
+    bodyDescription: [{ parameter: '', value: '' }],
+    successDescription: [{ parameter: '', value: '' }],
+    failureDescription: [{ parameter: '', value: '' }],
     url: '',
-    headers: [],
-    body: [],
-    success: [],
-    failure: []
+    headers: [{ parameter: '', value: '' }],
+    body: {},
+    test: '',
+    success: {},
+    failure: {}
   }),
   created() {
     if (this.$route.params.item === undefined) {
@@ -242,19 +268,35 @@ export default {
       this.url = this.$route.params.item.url
       this.headers = this.$route.params.item.headers
       this.success = this.$route.params.item.success
+      this.bodyDescription = this.$route.params.item.bodyDescription
+      this.successDescription = this.$route.params.item.successDescription
+      this.failureDescription = this.$route.params.item.failureDescription
       this.failure = this.$route.params.item.failure
       this.query = this.$route.params.item.query
       this.body = this.$route.params.item.body
-      console.log('\n\n\n\n\n\n', this.$route.params.item.query)
     }
   }
 }
 </script>
-<style scoped>
+<style>
 .disable-events {
   pointer-events: none;
 }
 .create-center {
   text-align: center;
+}
+#custom-placeholer-color {
+  color: red !important;
+  opacity: 1;
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > th,
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th,
+.v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
+  font-size: 15px !important;
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td,
+.v-data-table > .v-data-table__wrapper > table > thead > tr > td,
+.v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
+  font-size: 15px !important;
 }
 </style>

@@ -20,53 +20,63 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchEndpoints({ commit }) {
+  async fetchEndpoints({ commit }, applicationId) {
     try {
-      const { data } = await this.$axios.get('/endpoints/endpoints')
+      const { data } = await this.$axios.get(`/endpoints/${applicationId}`)
       commit('GET_ENDPOINTS', data.Endpoints)
       commit('GET_TOTAL_ENDPOINT', data.total)
     } catch (error) {
       if (error.response) {
-        console.log('\n\n\n\n\n', error.response.data.message)
+        this.dispatch('helper/showingMessage', {
+          visible: true,
+          type: 'error',
+          message: error.response.data.message
+        })
       }
     }
   },
 
-  async deleteUser({ commit }, id) {
+  async deleteApi({ commit }, id) {
     try {
-      await this.$axios.delete(`/users/${id}`)
+      const { data } = await this.$axios.delete(`/endpoints/endpoints/${id}`)
+      this.dispatch('endpoint/fetchEndpoints', id)
       this.dispatch('helper/showingMessage', {
         visible: true,
         type: 'success',
-        message: 'You have successfully deleted a user'
+        message: data.message
       })
-
-      this.dispatch('users/fetchUsers')
     } catch (e) {
       return e
     }
   },
 
-  async editUser({ commit }, { id, userData }) {
-    try {
-      await this.$axios.patch(`/users/${id}`, {
-        ...userData
-      })
-      this.dispatch('users/fetchUsers')
-    } catch (e) {
-      return e
-    }
-  },
   async createEndpoint(
     { commit },
-    { name, description, type, body, url, success, failure, headers, query }
+    {
+      name,
+      description,
+      type,
+      body,
+      url,
+      bodyDescription,
+      successDescription,
+      failureDescription,
+      success,
+      failure,
+      headers,
+      query,
+      applicationId
+    }
   ) {
     try {
-      const { data } = await this.$axios.post('endpoints', {
+      const { data } = await this.$axios.post(`endpoints/${applicationId}`, {
         name,
         description,
         url,
         body,
+        bodyDescription,
+        successDescription,
+        failureDescription,
         type,
         success,
         headers,
@@ -74,7 +84,7 @@ export const actions = {
         failure
       })
       if (data.message === 'Endpoint successfully created') {
-        this.dispatch('endpoint/fetchEndpoints')
+        this.dispatch('endpoint/fetchEndpoints', applicationId)
         await this.$router.push('/view-endpoints')
         this.dispatch('helper/showingMessage', {
           visible: true,
@@ -92,20 +102,22 @@ export const actions = {
   },
   async deleteApp({ commit }, id) {
     try {
-      console.log('\n\n\n\n\n\n', id)
       const { data } = await this.$axios.delete(
         '/applications/applications',
         id
       )
-      console.log('\n\n\n\n\n', data)
       this.dispatch('app/fetchApps')
       this.dispatch('helper/showingMessage', {
         visible: true,
         type: 'success',
         message: data.message
       })
-    } catch (e) {
-      return e
+    } catch (error) {
+      this.dispatch('helper/showingMessage', {
+        visible: true,
+        type: 'error',
+        message: error.response.data.message
+      })
     }
   }
 }

@@ -121,9 +121,10 @@ export const actions = {
 
   async editUser({ commit }, { id, userData }) {
     try {
-      await this.$axios.patch(`/users/${id}`, {
+      const { data } = await this.$axios.patch(`/users/${id}`, {
         ...userData
       })
+      console.log('\n\n\n\n\n', data)
       this.dispatch('users/fetchUsers')
     } catch (e) {
       return e
@@ -168,22 +169,6 @@ export const actions = {
       })
 
       this.dispatch('users/fetchUsers')
-    } catch (e) {
-      return e
-    }
-  },
-  async blockUser({ commit }, { reason, userId }) {
-    try {
-      await this.$axios.post('/block-user', {
-        reason,
-        userId
-      })
-      this.dispatch('users/fetchUsers')
-      this.dispatch('helper/showingMessage', {
-        visible: true,
-        type: 'success',
-        message: 'User has been blocked'
-      })
     } catch (e) {
       return e
     }
