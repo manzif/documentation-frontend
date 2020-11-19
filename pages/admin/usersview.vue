@@ -178,7 +178,7 @@
                             v-model="role"
                             :rules="[(v) => !!v || 'Type is required']"
                             :items="typeItems"
-                            label="Type"
+                            label="Role"
                             dense
                             outlined
                           ></v-select>
@@ -197,7 +197,7 @@
                             id="password"
                             ref="password"
                             v-model="password"
-                            :rules="passwordRules"
+                            :rules="[(v) => !!v || 'Password is required']"
                             :type="showPassword ? 'text' : 'password'"
                             :append-icon="
                               showPassword ? 'mdi-eye' : 'mdi-eye-off'
@@ -301,9 +301,6 @@
                               <v-flex xs12 sm8>
                                 <v-text-field
                                   v-model="firstname"
-                                  :rules="[
-                                    (v) => !!v || 'FirstName is required'
-                                  ]"
                                   label="FirstName"
                                   outlined
                                   clearable
@@ -311,9 +308,6 @@
                                 ></v-text-field>
                                 <v-text-field
                                   v-model="lastname"
-                                  :rules="[
-                                    (v) => !!v || 'LastName is required'
-                                  ]"
                                   label="LastName"
                                   outlined
                                   clearable
@@ -321,9 +315,6 @@
                                 ></v-text-field>
                                 <v-text-field
                                   v-model="username"
-                                  :rules="[
-                                    (v) => !!v || 'Username is required'
-                                  ]"
                                   label="Username"
                                   outlined
                                   clearable
@@ -332,19 +323,25 @@
                                 <v-text-field
                                   ref="email"
                                   v-model="email"
-                                  :rules="emailRules"
-                                  name="login"
                                   label="Email Address"
-                                  type="text"
                                   outlined
                                   dense
                                   required
                                 />
+                                <v-select
+                                  v-model="role"
+                                  :items="typeItems"
+                                  label="Role"
+                                  dense
+                                  outlined
+                                ></v-select>
                                 <v-text-field
                                   id="password"
                                   ref="password"
                                   v-model="password"
-                                  :rules="passwordRules"
+                                  :rules="[
+                                    (v) => !!v || 'Password is required'
+                                  ]"
                                   :type="showPassword ? 'text' : 'password'"
                                   :append-icon="
                                     showPassword ? 'mdi-eye' : 'mdi-eye-off'
@@ -389,8 +386,6 @@ export default {
   data() {
     return {
       search: '',
-      reason: '',
-      dialogBlock: false,
       isFormValid: false,
       Delete: 'Delete',
       description: 'are you sure you want to delete this user',
@@ -400,8 +395,9 @@ export default {
       firstname: '',
       showPassword: false,
       lastname: '',
+      role: '',
       password: '',
-      typeItems: ['admin', 'developer'],
+      typeItems: ['admin', 'developer', 'guest'],
       email: '',
       emailRules: [
         (v) => !!v || 'E-mail is required',
@@ -479,11 +475,11 @@ export default {
       try {
         const userData = {
           email: this.email,
-          master: this.master,
-          privilege: this.privilege,
+          firstname: this.firstname,
+          lastname: this.lastname,
           username: this.username,
           password: this.password,
-          type: this.type
+          role: this.role
         }
         await this.$store.dispatch('users/editUser', {
           userData,
@@ -492,8 +488,10 @@ export default {
         this.$store.dispatch('helper/isProgressLoader')
         this.dialogEdit = false
         this.email = null
-        this.master = null
-        this.privilege = null
+        this.firstname = null
+        this.lastname = null
+        this.role = null
+        this.password = null
         this.username = null
       } catch (e) {
         return e
@@ -520,20 +518,6 @@ export default {
         this.username = null
         this.role = null
         this.password = null
-      } catch (e) {
-        return e
-      }
-    },
-    async blockUser(id) {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        await this.$store.dispatch('users/blockUser', {
-          reason: this.reason,
-          userId: id
-        })
-        this.$store.dispatch('helper/isProgressLoader')
-        this.reason = null
-        this.dialogBlock = false
       } catch (e) {
         return e
       }

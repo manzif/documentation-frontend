@@ -4,6 +4,42 @@
     <v-item-group active-class="secondary">
       <div class="mx-md-12">
         <v-row align="center" justify="center">
+          <v-col v-if="authUser.role === 'admin'" cols="12" md="3" sm="6">
+            <v-item>
+              <v-card :ripple="false" class="pa-6">
+                <v-row
+                  align="center"
+                  justify="center"
+                  class="ma-2 primary--text font-weight-black"
+                >
+                  <v-icon color="primary" large>fa-fast-forward</v-icon>
+                </v-row>
+                <v-row
+                  align="center"
+                  justify="center"
+                  class="ma-2 primary--text font-weight-black"
+                >
+                  Add Guest
+                </v-row>
+
+                <v-card-text class="text-center">
+                  Use this action to create a Guest
+                </v-card-text>
+                <v-card-actions class="white justify-center">
+                  <v-btn
+                    :loading="false"
+                    :disabled="false"
+                    @click="goToAction('add-guest')"
+                    color="primary"
+                    class="ma-2 white--text"
+                  >
+                    <span>Create</span>
+                    <v-icon right small>fa-fast-forward</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-item>
+          </v-col>
           <v-col
             v-if="authUser.role === 'developer' || authUser.role === 'admin'"
             cols="12"

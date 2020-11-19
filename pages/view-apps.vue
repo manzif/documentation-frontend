@@ -142,6 +142,11 @@
               </template>
             </td>
           </template>
+          <template v-slot:no-data>
+            <v-btn color="primary" class="disable-events"
+              >There is no any APP</v-btn
+            >
+          </template>
         </v-data-table>
       </div>
     </v-item-group>
@@ -170,8 +175,9 @@ export default {
           value: 'title'
         },
         { text: 'Description', value: 'description' },
-        { text: 'Owner', value: 'userName' },
+        { text: 'CreatedBY', value: 'userName' },
         { text: 'Created At', value: 'createdAt' },
+        { text: 'Updated At', value: 'upatedAt' },
         { text: '', value: 'data-table-expand' }
       ]
     }
@@ -211,53 +217,6 @@ export default {
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
         this.dialogDelete = false
-      } catch (e) {
-        return e
-      }
-    },
-    async editUser(id) {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        const userData = {
-          email: this.email,
-          master: this.master,
-          privilege: this.privilege,
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('users/editUser', {
-          userData,
-          id
-        })
-        this.$store.dispatch('helper/isProgressLoader')
-        this.dialogEdit = false
-        this.email = null
-        this.master = null
-        this.privilege = null
-        this.username = null
-      } catch (e) {
-        return e
-      }
-    },
-    async registerUser() {
-      this.$store.dispatch('helper/isProgressLoader')
-      try {
-        const userData = {
-          email: this.email,
-          master: this.master,
-          privilege: this.privilege,
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('users/register', userData)
-        this.$store.dispatch('users/fetchUsers')
-        this.$store.dispatch('helper/isProgressLoader')
-        this.dialog1 = false
-        this.email = null
-        this.master = null
-        this.privilege = null
-        this.username = null
-        this.password = null
       } catch (e) {
         return e
       }

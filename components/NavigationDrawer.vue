@@ -27,71 +27,16 @@
             <v-list-item-title>Users</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <!-- <v-list-group prepend-icon="fa-cog" no-action>
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>Configurations</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-group no-action sub-group>
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Apps</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item to="/user/user-apps">
-              <v-list-item-content>
-                <v-list-item-title>Create App</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/user/apps">
-              <v-list-item-content>
-                <v-list-item-title>View Apps</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-          <v-list-group no-action sub-group>
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Providers</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item to="/user/user-providers">
-              <v-list-item-content>
-                <v-list-item-title>Choose Provider</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/user/providers">
-              <v-list-item-content>
-                <v-list-item-title>View Providers</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-          <v-list-group no-action sub-group>
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Operators</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item to="/user/user-operator">
-              <v-list-item-content>
-                <v-list-item-title>Choose Operator</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/user/operators">
-              <v-list-item-content>
-                <v-list-item-title>View Operators</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-        </v-list-group> -->
         <v-list-group prepend-icon="mdi-stack-exchange" no-action>
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Apps</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item to="/add-app">
+          <v-list-item
+            v-if="authUser.role === 'developer' || authUser.role === 'admin'"
+            to="/add-app"
+          >
             <v-list-item-content>
               <v-list-item-title>Create App</v-list-item-title>
             </v-list-item-content>
@@ -105,7 +50,10 @@
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item to="/view-apps">
+          <v-list-item
+            v-if="authUser.role === 'developer' || authUser.role === 'admin'"
+            to="/view-apps"
+          >
             <v-list-item-content>
               <v-list-item-title>View all App</v-list-item-title>
             </v-list-item-content>
@@ -117,9 +65,17 @@
               <v-list-item-title>General</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item to="/add-apis">
+          <v-list-item
+            v-if="authUser.role === 'developer' || authUser.role === 'admin'"
+            to="/add-apis"
+          >
             <v-list-item-content>
               <v-list-item-title>Add Api</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="authUser.role === 'admin'" to="/add-guest-general">
+            <v-list-item-content>
+              <v-list-item-title>Add Guest</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/view-apis">

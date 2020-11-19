@@ -51,13 +51,7 @@
                   Query Params
                 </h3>
               </v-flex>
-              <v-flex
-                v-if="query[0].parameter !== null"
-                xs12
-                sm12
-                md12
-                class="pb-3"
-              >
+              <v-flex v-if="query[0].parameter" xs12 sm12 md12 class="pb-3">
                 <template>
                   <v-data-table
                     :headers="headersQuery"

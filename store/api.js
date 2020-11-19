@@ -100,7 +100,6 @@ export const actions = {
         })
       }
     } catch (error) {
-      console.log('\n\n\n\n\n', error)
       this.dispatch('helper/showingMessage', {
         visible: true,
         type: 'error',
@@ -111,7 +110,7 @@ export const actions = {
   async deleteApi({ commit }, id) {
     try {
       const { data } = await this.$axios.delete(`/apis/apis/${id}`)
-      this.dispatch('api/fetchApis')
+      await this.dispatch('api/fetchApis')
       this.dispatch('helper/showingMessage', {
         visible: true,
         type: 'success',

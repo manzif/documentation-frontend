@@ -4,7 +4,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" md="7" sm="6">
           <h2 class="pb-1" color="#0087ff">
-            Create an App to be used in transactions.
+            Add a Guest.
           </h2>
           <div class="line"></div>
           <h4 class="my-6">
@@ -21,43 +21,39 @@
           <v-form ref="form" v-model="isFormValid" :lazy-validation="lazy">
             <v-flex xs12 md12 class="pb-7">
               <h2 class="headline black--text pb-1 font-weight-bold">
-                Create App
+                Add Guest
               </h2>
               <div class="line"></div>
             </v-flex>
             <v-flex xs12 md12>
-              <v-text-field
-                v-model="name"
-                :rules="[(v) => !!v || 'Name is required']"
-                label="Name"
-                required
-                dense
-                single-line
-                outlined
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12 md12>
               <v-select
-                v-model="type"
-                :rules="[(v) => !!v || 'Type is required']"
-                :items="typeItems"
-                label="type"
+                v-if="allUsers"
+                v-model="userId"
+                :rules="[(v) => !!v || 'Name is required']"
+                :items="allUsers"
+                item-text="lastname"
+                item-value="id"
+                label="FirstName"
                 dense
                 outlined
               ></v-select>
             </v-flex>
             <v-flex xs12 md12>
-              <v-text-field
-                v-model="description"
-                label="Description"
+              <v-select
+                v-if="allApps"
+                v-model="assignedItems"
+                :rules="[(v) => !!v || 'App is required']"
+                :items="allApps"
+                item-text="title"
+                item-value="id"
+                label="App"
                 dense
-                single-line
                 outlined
-              ></v-text-field>
+              ></v-select>
             </v-flex>
             <v-flex xs12 md12>
               <v-btn
-                @click="createApp"
+                @click="addGuest"
                 :loading="isLoading"
                 :disabled="isDisabled"
                 color="primary"
@@ -75,14 +71,19 @@
 export default {
   data() {
     return {
-      name: '',
-      type: '',
-      isFormValid: false,
-      description: '',
-      typeItems: ['web app', 'mobile app', 'desktop app']
+      assignedItems: [],
+      userId: '',
+      lazy: false,
+      isFormValid: false
     }
   },
   computed: {
+    allUsers() {
+      return this.$store.getters['users/allUsers']
+    },
+    allApps() {
+      return this.$store.getters['app/allApps']
+    },
     isLoading() {
       return this.$store.getters['helper/isLoading']
     },
@@ -91,20 +92,18 @@ export default {
     }
   },
   methods: {
-    async createApp() {
+    async addGuest() {
       this.$store.dispatch('helper/loading')
       this.$store.dispatch('helper/disabling')
       try {
-        await this.$store.dispatch('apps/createApp', {
-          name: this.name,
-          type: this.type,
-          description: this.description
+        await this.$store.dispatch('users/editUser', {
+          assignedItems: this.assignedItems,
+          id: this.userId
         })
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
-        this.name = null
-        this.type = null
-        this.description = null
+        this.assignedItems = null
+        this.userId = null
       } catch (e) {
         return e
       }

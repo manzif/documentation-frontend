@@ -167,6 +167,11 @@
               </template>
             </td>
           </template>
+          <template v-slot:no-data>
+            <v-btn color="primary" class="disable-events"
+              >There is no genera API</v-btn
+            >
+          </template>
         </v-data-table>
       </div>
     </v-item-group>
@@ -207,6 +212,7 @@ export default {
         { text: 'Type', value: 'type' },
         { text: 'Description', value: 'description' },
         { text: 'Url', value: 'url' },
+        { text: 'CreatedBY', value: 'userName' },
         { text: 'Created At', value: 'createdAt' },
         { text: '', value: 'data-table-expand' }
       ]

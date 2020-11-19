@@ -21,13 +21,6 @@
               </v-layout>
               <div class="line" />
               <div class="mb-5"></div>
-              <v-layout v-if="errorMessage">
-                <div class="mb-3 text-center">
-                  <v-card class="pa-2">
-                    <h4 class="red--text">{{ errorMessage }}</h4>
-                  </v-card>
-                </div>
-              </v-layout>
               <v-form v-model="isFormValid" :lazy-validation="lazy">
                 <v-card-text class="px-0">
                   <v-text-field
@@ -97,10 +90,7 @@ export default {
     ...mapGetters({
       isLoading: 'helper/isLoading',
       isDisabled: 'helper/isDisabled'
-    }),
-    errorMessage() {
-      return this.$store.getters['users/errorMessage']
-    }
+    })
   },
   methods: {
     async login() {

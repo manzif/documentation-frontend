@@ -247,6 +247,7 @@
                 <v-flex xs12 12>
                   <v-btn
                     :disabled="!isFormValid"
+                    :loading="isLoading"
                     @click="createApi"
                     color="primary"
                     block
@@ -300,6 +301,14 @@ export default {
     url: '',
     lazy: false
   }),
+  computed: {
+    isLoading() {
+      return this.$store.getters['helper/isLoading']
+    },
+    isDisabled() {
+      return this.$store.getters['helper/isDisabled']
+    }
+  },
   methods: {
     validate() {
       this.$refs.form.validate()

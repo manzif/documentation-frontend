@@ -57,8 +57,10 @@ export const actions = {
         await this.$auth.setUser(data.user)
         await this.$auth.$storage.setLocalStorage('user', data.user)
         await this.$auth.$storage.setCookie('user', data.user)
-        await this.$router.push('/')
         await this.dispatch('users/fetchUsers')
+        await this.dispatch('app/fetchApps')
+        await this.dispatch('api/fetchApis')
+        await this.$router.push('/')
       }
     } catch (error) {
       if (error.response) {
@@ -119,15 +121,25 @@ export const actions = {
     }
   },
 
-  async editUser({ commit }, { id, userData }) {
+  async editUser({ commit }, { id, assignedItems }) {
     try {
-      const { data } = await this.$axios.patch(`/users/${id}`, {
-        ...userData
+      const { data } = await this.$axios.patch(`/users/users/${id}`, {
+        assignedItems
       })
-      console.log('\n\n\n\n\n', data)
-      this.dispatch('users/fetchUsers')
-    } catch (e) {
-      return e
+      if (data.message === 'User updated successfully') {
+        this.dispatch('helper/showingMessage', {
+          visible: true,
+          type: 'success',
+          message: 'Guest added to the APP successfuly'
+        })
+        await this.dispatch('users/fetchUsers')
+      }
+    } catch (error) {
+      this.dispatch('helper/showingMessage', {
+        visible: true,
+        type: 'error',
+        message: error.response.data.message
+      })
     }
   },
   async registerUser(
@@ -149,6 +161,7 @@ export const actions = {
           type: 'success',
           message: 'User created successfuly'
         })
+        await this.dispatch('users/fetchUsers')
         await this.$router.push('/admin/usersview')
       }
     } catch (error) {

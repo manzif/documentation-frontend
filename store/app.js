@@ -19,7 +19,7 @@ export const actions = {
   async fetchApps({ commit }) {
     try {
       const { data } = await this.$axios.get('/applications/applications')
-      commit('GET_APPS', data.applications)
+      commit('GET_APPS', data.Applications)
       commit('GET_TOTAL_APP', data.total)
     } catch (error) {
       if (error.response) {
@@ -32,15 +32,14 @@ export const actions = {
     }
   },
 
-  async createApp({ commit }, { title, description, userName }) {
+  async createApp({ commit }, { title, description }) {
     try {
       const { data } = await this.$axios.post('applications', {
         title,
-        description,
-        userName
+        description
       })
       if (data.message === 'Application successfully created') {
-        this.dispatch('app/fetchApps')
+        await this.dispatch('app/fetchApps')
         await this.$router.push('/view-apps')
         this.dispatch('helper/showingMessage', {
           visible: true,
