@@ -41,6 +41,11 @@
               <v-list-item-title>Create App</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item v-if="authUser.role === 'admin'" to="/add-guest">
+            <v-list-item-content>
+              <v-list-item-title>Add Guest</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item
             v-for="item in allApps"
             :key="item.title"

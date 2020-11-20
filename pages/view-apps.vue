@@ -100,7 +100,7 @@
                               <v-flex xs12 sm8>
                                 <v-text-field
                                   v-model="title"
-                                  label="Title"
+                                  :label="item.title"
                                   outlined
                                   clearable
                                   dense
@@ -108,13 +108,6 @@
                                 <v-text-field
                                   v-model="description"
                                   label="Description"
-                                  outlined
-                                  clearable
-                                  dense
-                                ></v-text-field>
-                                <v-text-field
-                                  v-model="owner"
-                                  label="Owner"
                                   outlined
                                   clearable
                                   dense
@@ -127,7 +120,7 @@
                                 Cancel</v-btn
                               >
                               <v-btn
-                                @click="editUser(item._id)"
+                                @click="editApp(item.id)"
                                 :disabled="!isFormValid"
                                 color="success"
                                 >Save</v-btn
@@ -163,7 +156,6 @@ export default {
       dialog1: false,
       dialogDelete: false,
       title: '',
-      owner: '',
       description: '',
       expanded: [],
       singleExpand: false,
@@ -217,6 +209,22 @@ export default {
         this.$store.dispatch('helper/loading')
         this.$store.dispatch('helper/disabling')
         this.dialogDelete = false
+      } catch (e) {
+        return e
+      }
+    },
+    async editApp(id) {
+      this.$store.dispatch('helper/isProgressLoader')
+      try {
+        await this.$store.dispatch('app/updateApp', {
+          title: this.title,
+          description: this.description,
+          id
+        })
+        this.$store.dispatch('helper/isProgressLoader')
+        this.dialogEdit = false
+        this.title = null
+        this.description = null
       } catch (e) {
         return e
       }

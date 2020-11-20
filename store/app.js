@@ -75,6 +75,31 @@ export const actions = {
         })
       }
     }
+  },
+  async updateApp({ commit }, { id, title, description }) {
+    try {
+      const { data } = await this.$axios.patch(
+        `/applications/applications/${id}`,
+        {
+          title,
+          description
+        }
+      )
+      if (data.message === 'Application updated successfuly') {
+        this.dispatch('helper/showingMessage', {
+          visible: true,
+          type: 'success',
+          message: data.message
+        })
+        await this.dispatch('app/fetchApps')
+      }
+    } catch (error) {
+      this.dispatch('helper/showingMessage', {
+        visible: true,
+        type: 'error',
+        message: error.response.data.message
+      })
+    }
   }
 }
 

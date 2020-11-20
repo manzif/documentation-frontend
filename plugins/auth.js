@@ -5,7 +5,7 @@ export default function({ $auth, $dialog, store }, ctx) {
     // console.error(name, error)
 
     if (name.method === 'login') {
-      $dialog.notify.error('Unexpected error occured', {
+      $dialog.notify.error('Wrong email or Password', {
         position: 'top-right',
         timeout: 5000
       })

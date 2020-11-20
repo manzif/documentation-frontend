@@ -142,6 +142,35 @@ export const actions = {
       })
     }
   },
+  async updateUser(
+    { commit },
+    { id, email, password, username, firstname, lastname, role }
+  ) {
+    try {
+      const { data } = await this.$axios.patch(`/users/users/${id}`, {
+        email,
+        firstname,
+        lastname,
+        role,
+        password,
+        username
+      })
+      if (data.message === 'User updated successfully') {
+        this.dispatch('helper/showingMessage', {
+          visible: true,
+          type: 'success',
+          message: 'User updated successfully'
+        })
+        await this.dispatch('users/fetchUsers')
+      }
+    } catch (error) {
+      this.dispatch('helper/showingMessage', {
+        visible: true,
+        type: 'error',
+        message: error.response.data.message
+      })
+    }
+  },
   async registerUser(
     { commit },
     { email, password, username, firstname, lastname, role }

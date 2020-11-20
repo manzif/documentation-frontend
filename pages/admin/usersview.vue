@@ -301,21 +301,21 @@
                               <v-flex xs12 sm8>
                                 <v-text-field
                                   v-model="firstname"
-                                  label="FirstName"
+                                  :label="item.firstname"
                                   outlined
                                   clearable
                                   dense
                                 ></v-text-field>
                                 <v-text-field
                                   v-model="lastname"
-                                  label="LastName"
+                                  :label="item.lastname"
                                   outlined
                                   clearable
                                   dense
                                 ></v-text-field>
                                 <v-text-field
                                   v-model="username"
-                                  label="Username"
+                                  :label="item.username"
                                   outlined
                                   clearable
                                   dense
@@ -323,7 +323,7 @@
                                 <v-text-field
                                   ref="email"
                                   v-model="email"
-                                  label="Email Address"
+                                  :label="item.email"
                                   outlined
                                   dense
                                   required
@@ -331,7 +331,7 @@
                                 <v-select
                                   v-model="role"
                                   :items="typeItems"
-                                  label="Role"
+                                  :label="item.role"
                                   dense
                                   outlined
                                 ></v-select>
@@ -339,9 +339,6 @@
                                   id="password"
                                   ref="password"
                                   v-model="password"
-                                  :rules="[
-                                    (v) => !!v || 'Password is required'
-                                  ]"
                                   :type="showPassword ? 'text' : 'password'"
                                   :append-icon="
                                     showPassword ? 'mdi-eye' : 'mdi-eye-off'
@@ -361,7 +358,7 @@
                                 Cancel</v-btn
                               >
                               <v-btn
-                                @click="editUser(item._id)"
+                                @click="editUser(item.id)"
                                 :disabled="!isFormValid"
                                 color="success"
                                 >Save</v-btn
@@ -473,16 +470,13 @@ export default {
     async editUser(id) {
       this.$store.dispatch('helper/isProgressLoader')
       try {
-        const userData = {
+        await this.$store.dispatch('users/updateUser', {
           email: this.email,
           firstname: this.firstname,
           lastname: this.lastname,
           username: this.username,
           password: this.password,
-          role: this.role
-        }
-        await this.$store.dispatch('users/editUser', {
-          userData,
+          role: this.role,
           id
         })
         this.$store.dispatch('helper/isProgressLoader')
