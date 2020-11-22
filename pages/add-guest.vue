@@ -89,6 +89,21 @@ export default {
     },
     isDisabled() {
       return this.$store.getters['helper/isDisabled']
+    },
+    authUser() {
+      return this.$store.getters['users/loggedInUser']
+    }
+  },
+  created() {
+    try {
+      if (this.authUser.role !== 'admin') {
+        this.$router.push('/')
+      }
+      if (this.allApps.length === 0) {
+        this.$store.dispatch('app/fetchApps')
+      }
+    } catch (e) {
+      return e
     }
   },
   methods: {

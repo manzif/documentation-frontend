@@ -38,7 +38,12 @@
               <template>
                 <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="280" flat>
                   <template>
-                    <v-dialog v-model="dialogDelete" persistent max-width="390">
+                    <v-dialog
+                      v-if="authUser.role === 'admin'"
+                      v-model="dialogDelete"
+                      persistent
+                      max-width="390"
+                    >
                       <template v-slot:activator="{ on }">
                         <v-chip
                           v-on="on"
@@ -189,10 +194,18 @@ export default {
     },
     isDisabled() {
       return this.$store.getters['helper/isDisabled']
+    },
+    authUser() {
+      return this.$store.getters['users/loggedInUser']
     }
   },
   created() {
     try {
+      if (
+        !(this.authUser.role === 'admin' || this.authUser.role === 'developer')
+      ) {
+        this.$router.push('/')
+      }
       if (this.allApps.length === 0) {
         this.$store.dispatch('app/fetchApps')
       }

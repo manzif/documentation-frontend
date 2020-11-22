@@ -38,7 +38,12 @@
               <template>
                 <v-card class="mx-auto mt-5 pl-3 mb-5" max-width="380" flat>
                   <template>
-                    <v-dialog v-model="dialogDelete" persistent max-width="390">
+                    <v-dialog
+                      v-if="authUser.role === 'admin'"
+                      v-model="dialogDelete"
+                      persistent
+                      max-width="390"
+                    >
                       <template v-slot:activator="{ on }">
                         <v-chip
                           v-on="on"
@@ -73,7 +78,14 @@
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
-                    <v-dialog v-model="dialogEdit" max-width="500px">
+                    <v-dialog
+                      v-if="
+                        authUser.role === 'developer' ||
+                          authUser.role === 'admin'
+                      "
+                      v-model="dialogEdit"
+                      max-width="500px"
+                    >
                       <template v-slot:activator="{ on }">
                         <v-chip v-on="on" class="ma-2" color="success" outlined>
                           <v-icon left>mdi-pencil</v-icon>
@@ -233,6 +245,9 @@ export default {
     },
     isDisabled() {
       return this.$store.getters['helper/isDisabled']
+    },
+    authUser() {
+      return this.$store.getters['users/loggedInUser']
     }
   },
   created() {

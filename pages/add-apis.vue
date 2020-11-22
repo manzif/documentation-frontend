@@ -307,6 +307,20 @@ export default {
     },
     isDisabled() {
       return this.$store.getters['helper/isDisabled']
+    },
+    authUser() {
+      return this.$store.getters['users/loggedInUser']
+    }
+  },
+  created() {
+    try {
+      if (
+        !(this.authUser.role === 'admin' || this.authUser.role === 'developer')
+      ) {
+        this.$router.push('/')
+      }
+    } catch (e) {
+      return e
     }
   },
   methods: {
