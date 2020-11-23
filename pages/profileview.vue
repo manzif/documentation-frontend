@@ -20,7 +20,81 @@
               </v-list-item-content>
             </div>
             <v-divider class="mx-2"></v-divider>
-            <v-divider class="mx-2"></v-divider>
+            <v-card-actions>
+              <v-dialog v-model="dialogEdit" max-width="500px">
+                <template v-slot:activator="{ on }">
+                  <v-btn v-on="on" color="primary" block outlined rounded>
+                    <v-icon left>mdi-pencil</v-icon>
+                    change Password
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-toolbar class="mb-6">
+                    <v-spacer />
+                    <h3 class="headline">Edit {{ authUser.username }} info</h3>
+                    <v-progress-linear
+                      :active="isProgressLoader"
+                      :indeterminate="isProgressLoader"
+                      absolute
+                      bottom
+                      color="primary"
+                    ></v-progress-linear>
+                    <v-spacer />
+                  </v-toolbar>
+
+                  <v-card-text class="pb-0">
+                    <v-form v-model="isFormValid">
+                      <v-layout align-center justify-center>
+                        <v-flex xs12 sm8>
+                          <v-text-field
+                            id="password"
+                            ref="password"
+                            v-model="oldPassword"
+                            :type="showPassword ? 'text' : 'password'"
+                            :append-icon="
+                              showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            "
+                            @click:append="showPassword = !showPassword"
+                            name="Password"
+                            label="Old Password"
+                            required
+                            dense
+                            outlined
+                          />
+                          <v-text-field
+                            id="password"
+                            ref="password"
+                            v-model="newPassword"
+                            :type="viewPassword ? 'text' : 'password'"
+                            :append-icon="
+                              viewPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            "
+                            @click:append="viewPassword = !viewPassword"
+                            name="Password"
+                            label="New Password"
+                            required
+                            dense
+                            outlined
+                          />
+                        </v-flex>
+                      </v-layout>
+                      <v-divider></v-divider>
+                      <v-card-actions class="justify-center">
+                        <v-btn @click="dialogEdit = false" color="cancel">
+                          Cancel</v-btn
+                        >
+                        <v-btn
+                          @click="editUser(authUser.id)"
+                          :disabled="!isFormValid"
+                          color="success"
+                          >Save</v-btn
+                        >
+                      </v-card-actions>
+                    </v-form>
+                  </v-card-text>
+                </v-card>
+              </v-dialog>
+            </v-card-actions>
           </v-card>
         </v-flex>
         <v-flex xs12 md8>
@@ -87,10 +161,15 @@ export default {
     return {
       dialogEdit: false,
       isFormValid: false,
-      email: '',
       username: '',
       firstname: '',
-      lastname: ''
+      oldPassword: '',
+      newPassword: '',
+      viewPassword: false,
+      showPassword: false,
+      lastname: '',
+      password: '',
+      email: ''
     }
   },
   computed: {
@@ -116,6 +195,22 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
+    },
+    async editUser(id) {
+      this.$store.dispatch('helper/isProgressLoader')
+      try {
+        await this.$store.dispatch('users/updatePassword', {
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword,
+          id
+        })
+        this.$store.dispatch('helper/isProgressLoader')
+        this.dialogEdit = false
+        this.oldPassword = null
+        this.newPassword = null
+      } catch (e) {
+        return e
+      }
     }
   }
 }

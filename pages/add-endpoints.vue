@@ -88,6 +88,9 @@
                   >
                 </v-flex>
                 <v-flex xs12 md12>
+                  <v-divider></v-divider>
+                </v-flex>
+                <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
                     Query Parameters
                   </div>
@@ -117,6 +120,48 @@
                 </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
+                    Query Data description
+                  </div>
+                  <v-layout row v-for="row in queryDescription" :key="row.id">
+                    <v-flex xs12 md4>
+                      <v-text-field
+                        v-model="row.parameter"
+                        placeholder="Parameter"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                      <v-text-field
+                        v-model="row.description"
+                        placeholder="Data Description"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                      <v-text-field
+                        v-model="row.value"
+                        placeholder="Data Type"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-btn outlined grey @click="addqueryDescription"
+                    >Add New Description</v-btn
+                  >
+                </v-flex>
+                <v-flex xs12 md12>
+                  <v-divider></v-divider>
+                </v-flex>
+                <v-flex xs12 md12>
+                  <div class="subtitle-1 grey--text pb-1">
                     Body
                   </div>
                   <v-textarea
@@ -133,7 +178,7 @@
                     Body Data description
                   </div>
                   <v-layout row v-for="row in bodyDescription" :key="row.id">
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
                       <v-text-field
                         v-model="row.parameter"
                         placeholder="Parameter"
@@ -142,7 +187,16 @@
                         outlined
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
+                      <v-text-field
+                        v-model="row.description"
+                        placeholder="Data Description"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
                       <v-text-field
                         v-model="row.value"
                         placeholder="Data Type"
@@ -157,6 +211,9 @@
                   <v-btn outlined grey @click="addbodyDescription"
                     >Add New Description</v-btn
                   >
+                </v-flex>
+                <v-flex xs12 md12>
+                  <v-divider></v-divider>
                 </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
@@ -176,7 +233,7 @@
                     Success Data description
                   </div>
                   <v-layout row v-for="row in successDescription" :key="row.id">
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
                       <v-text-field
                         v-model="row.parameter"
                         placeholder="Parameter"
@@ -185,7 +242,16 @@
                         outlined
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
+                      <v-text-field
+                        v-model="row.description"
+                        placeholder="Data Description"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
                       <v-text-field
                         v-model="row.value"
                         placeholder="Data Type"
@@ -219,7 +285,7 @@
                     Failure Data description
                   </div>
                   <v-layout row v-for="row in failureDescription" :key="row.id">
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
                       <v-text-field
                         v-model="row.parameter"
                         placeholder="Parameter"
@@ -228,7 +294,16 @@
                         outlined
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 md6>
+                    <v-flex xs12 md4>
+                      <v-text-field
+                        v-model="row.description"
+                        placeholder="Data Description"
+                        dense
+                        single-line
+                        outlined
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
                       <v-text-field
                         v-model="row.value"
                         placeholder="Data Type"
@@ -266,14 +341,15 @@
 export default {
   data: () => ({
     isFormValid: false,
-    headers: [{ parameter: '', value: '' }],
-    query: [{ parameter: '', value: '' }],
+    headers: [{ parameter: '', value: '', description: '' }],
+    query: [{ parameter: '', value: '', description: '' }],
+    queryDescription: [{ parameter: '', value: '', description: '' }],
     body: '',
-    rows: [{ parameter: '', value: '' }],
+    rows: [{ parameter: '', value: '', description: '' }],
     bodyItem: '',
-    bodyDescription: [{ parameter: '', value: '' }],
-    successDescription: [{ parameter: '', value: '' }],
-    failureDescription: [{ parameter: '', value: '' }],
+    bodyDescription: [{ parameter: '', value: '', description: '' }],
+    successDescription: [{ parameter: '', value: '', description: '' }],
+    failureDescription: [{ parameter: '', value: '', description: '' }],
     type: '',
     failure: '',
     bodyPlace: JSON.stringify(
@@ -331,22 +407,33 @@ export default {
       this.$refs.form.reset()
     },
     addRow() {
-      this.rows.push({ parameter: '', value: '' })
+      this.rows.push({ parameter: '', value: '', description: '' })
     },
     addQuery() {
-      this.query.push({ parameter: '', value: '' })
+      this.query.push({ parameter: '', value: '', description: '' })
+    },
+    addqueryDescription() {
+      this.queryDescription.push({ parameter: '', value: '', description: '' })
     },
     addHeaders() {
-      this.headers.push({ parameter: '', value: '' })
+      this.headers.push({ parameter: '', value: '', description: '' })
     },
     addbodyDescription() {
-      this.bodyDescription.push({ parameter: '', value: '' })
+      this.bodyDescription.push({ parameter: '', value: '', description: '' })
     },
     addsuccessDescription() {
-      this.successDescription.push({ parameter: '', value: '' })
+      this.successDescription.push({
+        parameter: '',
+        value: '',
+        description: ''
+      })
     },
     addfailureDescription() {
-      this.failureDescription.push({ parameter: '', value: '' })
+      this.failureDescription.push({
+        parameter: '',
+        value: '',
+        description: ''
+      })
     },
     resetValidation() {
       this.$refs.form.resetValidation()
@@ -361,6 +448,7 @@ export default {
           type: this.type,
           body: this.body,
           bodyDescription: this.bodyDescription,
+          queryDescription: this.queryDescription,
           successDescription: this.successDescription,
           failureDescription: this.failureDescription,
           success: this.success,

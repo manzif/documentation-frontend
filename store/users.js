@@ -214,6 +214,29 @@ export const actions = {
     } catch (e) {
       return e
     }
+  },
+
+  async updatePassword({ commit }, { id, oldPassword, newPassword }) {
+    try {
+      const { data } = await this.$axios.put('/users/users', {
+        id,
+        oldPassword,
+        newPassword
+      })
+      if (data.message === 'Password changed successfully') {
+        this.dispatch('helper/showingMessage', {
+          visible: true,
+          type: 'success',
+          message: data.message
+        })
+      }
+    } catch (error) {
+      this.dispatch('helper/showingMessage', {
+        visible: true,
+        type: 'error',
+        message: error.response.data.message
+      })
+    }
   }
 }
 

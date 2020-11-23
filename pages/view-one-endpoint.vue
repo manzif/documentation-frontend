@@ -239,12 +239,14 @@ export default {
         align: 'start',
         value: 'parameter'
       },
+      { text: 'Description', value: 'description' },
       { text: 'Data Type', value: 'value' }
     ],
     query: [{ parameter: '', value: '' }],
-    bodyDescription: [{ parameter: '', value: '' }],
-    successDescription: [{ parameter: '', value: '' }],
-    failureDescription: [{ parameter: '', value: '' }],
+    queryDescription: [{ parameter: '', value: '', description: '' }],
+    bodyDescription: [{ parameter: '', value: '', description: '' }],
+    successDescription: [{ parameter: '', value: '', description: '' }],
+    failureDescription: [{ parameter: '', value: '', description: '' }],
     url: '',
     headers: [{ parameter: '', value: '' }],
     body: {},
