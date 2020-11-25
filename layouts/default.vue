@@ -12,7 +12,12 @@
         <v-spacer />
 
         <nuxt-link to="/"
-          ><v-img height="50px" contain src="/images/logo.svg"></v-img
+          ><v-img
+            height="50px"
+            width="150px"
+            contain
+            src="/images/mobich.png"
+          ></v-img
         ></nuxt-link>
 
         <v-spacer />

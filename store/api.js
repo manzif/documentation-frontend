@@ -19,7 +19,6 @@ export const actions = {
   async fetchApis({ commit }) {
     try {
       const { data } = await this.$axios.get('/apis/apis')
-      console.log('\n\n\n\n\n', data)
       commit('GET_APIS', data.Apis)
       commit('GET_TOTAL_API', data.total)
     } catch (error) {

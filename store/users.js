@@ -57,7 +57,9 @@ export const actions = {
         await this.$auth.setUser(data.user)
         await this.$auth.$storage.setLocalStorage('user', data.user)
         await this.$auth.$storage.setCookie('user', data.user)
-        await this.dispatch('users/fetchUsers')
+        if (data.user.role === 'admin') {
+          await this.dispatch('users/fetchUsers')
+        }
         await this.dispatch('app/fetchApps')
         await this.dispatch('api/fetchApis')
         await this.$router.push('/')

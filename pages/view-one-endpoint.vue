@@ -274,7 +274,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .disable-events {
   pointer-events: none;
 }
@@ -284,15 +284,5 @@ export default {
 #custom-placeholer-color {
   color: red !important;
   opacity: 1;
-}
-.v-data-table > .v-data-table__wrapper > table > tbody > tr > th,
-.v-data-table > .v-data-table__wrapper > table > thead > tr > th,
-.v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
-  font-size: 15px !important;
-}
-.v-data-table > .v-data-table__wrapper > table > tbody > tr > td,
-.v-data-table > .v-data-table__wrapper > table > thead > tr > td,
-.v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
-  font-size: 15px !important;
 }
 </style>

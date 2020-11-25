@@ -83,8 +83,23 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md3>
-                  <v-btn outlined grey @click="addHeaders"
-                    >Add New Header</v-btn
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addHeaders"
+                    ><v-icon center dark> mdi-plus </v-icon></v-btn
+                  >
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="removeRow('this.headers')"
+                  >
+                    <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
                 <v-flex xs12 md12>
@@ -113,7 +128,24 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md3>
-                  <v-btn outlined grey @click="addQuery">Add New Query</v-btn>
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addQuery"
+                    ><v-icon center dark> mdi-plus </v-icon></v-btn
+                  >
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="removeRow('this.query')"
+                  >
+                    <v-icon center dark> mdi-minus </v-icon></v-btn
+                  >
                 </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
@@ -150,8 +182,23 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md3>
-                  <v-btn outlined grey @click="addqueryDescription"
-                    >Add New Description</v-btn
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addqueryDescription"
+                    ><v-icon center dark> mdi-plus </v-icon></v-btn
+                  >
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="removeRow('this.queryDescription')"
+                  >
+                    <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
                 <v-flex xs12 md12>
@@ -202,8 +249,23 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md3>
-                  <v-btn outlined grey @click="addbodyDescription"
-                    >Add New Description</v-btn
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addbodyDescription"
+                    ><v-icon center dark> mdi-plus </v-icon></v-btn
+                  >
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="removeRow('this.bodyDescription')"
+                  >
+                    <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
                 <v-flex xs12 md12>
@@ -254,8 +316,23 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md3>
-                  <v-btn outlined grey @click="addsuccessDescription"
-                    >Add New Description</v-btn
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addsuccessDescription"
+                    ><v-icon center dark> mdi-plus </v-icon></v-btn
+                  >
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="removeRow('this.successDescription')"
+                  >
+                    <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
                 <v-flex xs12 md12>
@@ -306,8 +383,22 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs12 md3>
-                  <v-btn outlined grey @click="addfailureDescription"
-                    >Add New Description</v-btn
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addfailureDescription"
+                    ><v-icon center dark> mdi-plus </v-icon></v-btn
+                  >
+                  <v-btn
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="removeRow('this.failureDescription')"
+                  >
+                    <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
                 <v-flex xs12 12>
@@ -399,6 +490,33 @@ export default {
     },
     addRow() {
       this.rows.push({ parameter: '', value: '', description: '' })
+    },
+    removeRow(item) {
+      if (item === 'this.query') {
+        if (this.query.length !== 1) {
+          this.query.splice(this.query.length - 1)
+        }
+      } else if (item === 'this.bodyDescription') {
+        if (this.bodyDescription.length !== 1) {
+          this.bodyDescription.splice(this.bodyDescription.length - 1)
+        }
+      } else if (item === 'this.successDescription') {
+        if (this.successDescription.length !== 1) {
+          this.successDescription.splice(this.successDescription.length - 1)
+        }
+      } else if (item === 'this.failureDescription') {
+        if (this.failureDescription.length !== 1) {
+          this.failureDescription.splice(this.failureDescription.length - 1)
+        }
+      } else if (item === 'this.headers') {
+        if (this.headers.length !== 1) {
+          this.headers.splice(this.headers.length - 1)
+        }
+      } else if (item === 'this.queryDescription') {
+        if (this.queryDescription.length !== 1) {
+          this.queryDescription.splice(this.queryDescription.length - 1)
+        }
+      }
     },
     addQuery() {
       this.query.push({ parameter: '', value: '', description: '' })

@@ -174,7 +174,7 @@ export default {
         { text: 'Description', value: 'description' },
         { text: 'CreatedBY', value: 'userName' },
         { text: 'Created At', value: 'createdAt' },
-        { text: 'Updated At', value: 'upatedAt' },
+        { text: 'Updated At', value: 'updatedAt' },
         { text: '', value: 'data-table-expand' }
       ]
     }
