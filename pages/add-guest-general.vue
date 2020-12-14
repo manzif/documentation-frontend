@@ -8,10 +8,9 @@
           </h2>
           <div class="line"></div>
           <h4 class="my-6">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut,
-            suscipit a. Debitis placeat asperiores corrupti dolores? Vel
-            voluptatibus aut animi, quas doloribus, itaque molestiae ipsum
-            officia at natus mollitia iure?
+            Hello, at this page you can add a guest to our general APIs. When a
+            user is added as a guest on the APIs he/she won't be able to update
+            or delete them, it is only for view.
           </h4>
           <v-btn class="" color="#0087ff" outlined to="/admin/usersview" nuxt
             ><v-icon>mdi-play</v-icon> See all available users</v-btn

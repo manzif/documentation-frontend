@@ -3,16 +3,22 @@
     <v-row justify="center">
       <v-col cols="12" md="8" sm="10">
         <v-container grid-list-md>
-          <v-card text class="pa-7">
-            <v-form ref="form" v-model="isFormValid" :lazy-validation="lazy">
-              <v-layout row wrap class="pa-5">
-                <v-flex xs12 sm12 md12 class="pb-3">
-                  <h2 class="headline black--text pb-1 font-weight-bold">
-                    Create General API
-                  </h2>
-                  <div class="line"></div>
+          <v-form ref="form" v-model="isFormValid" :lazy-validation="lazy">
+            <v-card text class="pa-7 my-7">
+              <v-layout row wrap class="px-2">
+                <v-flex xs12 sm12 md12 class="py-2">
+                  <h1 class="headline black--text pb-1 font-weight-bold">
+                    API description
+                  </h1>
                 </v-flex>
-                <v-flex xs12 md6>
+                <v-flex xs12 sm12 md12>
+                  <p>
+                    Please provide the description of the API you are about to
+                    save. This consist of the name, the URL, type and
+                    description
+                  </p>
+                </v-flex>
+                <v-flex xs12 md6 class="py-0 ma-0">
                   <div class="subtitle-1 grey--text pb-1">Name</div>
                   <v-text-field
                     v-model="name"
@@ -20,14 +26,16 @@
                     dense
                     single-line
                     outlined
+                    class="pa-0 ma-0"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 md6>
+                <v-flex xs12 md6 class="py-0 ma-0">
                   <div class="subtitle-1 grey--text pb-1">
                     Type
                   </div>
                   <v-select
                     v-model="type"
+                    class="pa-0 ma-0"
                     :rules="[(v) => !!v || 'Type is required']"
                     :items="typeItems"
                     dense
@@ -57,6 +65,21 @@
                     outlined
                   ></v-text-field>
                 </v-flex>
+              </v-layout>
+            </v-card>
+            <v-card text class="pa-7 my-7">
+              <v-layout row wrap class="px-2">
+                <v-flex xs12 sm12 md12 class="py-2">
+                  <h1 class="headline black--text pb-1 font-weight-bold">
+                    Headers
+                  </h1>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <p>
+                    Please provide the headers of the API if there any. Here you
+                    can specify if you need authorization or others.
+                  </p>
+                </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
                     Headers
@@ -84,7 +107,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-btn
-                    class="mx-2"
+                    class="mr-2"
                     fab
                     dark
                     small
@@ -101,6 +124,21 @@
                   >
                     <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <v-card text class="pa-7 my-7">
+              <v-layout row wrap class="px-2">
+                <v-flex xs12 sm12 md12 class="py-2">
+                  <h1 class="headline black--text pb-1 font-weight-bold">
+                    Query Parameters
+                  </h1>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <p>
+                    Please if the API needs query parameters provide them here.
+                    Here you can specify the data description and data type.
+                  </p>
                 </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
@@ -129,7 +167,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-btn
-                    class="mx-2"
+                    class="mr-2"
                     fab
                     dark
                     small
@@ -183,7 +221,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-btn
-                    class="mx-2"
+                    class="mr-2"
                     fab
                     dark
                     small
@@ -200,6 +238,22 @@
                   >
                     <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <v-card text class="pa-7 my-7">
+              <v-layout row wrap class="px-2">
+                <v-flex xs12 sm12 md12 class="py-2">
+                  <h1 class="headline black--text pb-1 font-weight-bold">
+                    Body
+                  </h1>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <p>
+                    In this part if the API needs body request provide them
+                    here. Here you can specify the data description and data
+                    type.
+                  </p>
                 </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
@@ -250,7 +304,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-btn
-                    class="mx-2"
+                    class="mr-2"
                     fab
                     dark
                     small
@@ -268,9 +322,24 @@
                     <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
+              </v-layout>
+            </v-card>
+            <v-card text class="pa-7 my-7">
+              <v-layout row wrap class="px-2">
+                <v-flex xs12 sm12 md12 class="py-2">
+                  <h1 class="headline black--text pb-1 font-weight-bold">
+                    Success Response
+                  </h1>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <p>
+                    In this part you can provide the successful response and
+                    their data description, and data type.
+                  </p>
+                </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
-                    Sucess
+                    Success
                   </div>
                   <v-textarea
                     v-model="success"
@@ -317,7 +386,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-btn
-                    class="mx-2"
+                    class="mr-2"
                     fab
                     dark
                     small
@@ -334,6 +403,21 @@
                   >
                     <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <v-card text class="pa-7 my-7">
+              <v-layout row wrap class="px-2">
+                <v-flex xs12 sm12 md12 class="py-2">
+                  <h1 class="headline black--text pb-1 font-weight-bold">
+                    Failure Response
+                  </h1>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <p>
+                    In this part you can provide the failure response and their
+                    data description, and data type.
+                  </p>
                 </v-flex>
                 <v-flex xs12 md12>
                   <div class="subtitle-1 grey--text pb-1">
@@ -384,6 +468,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-btn
+                    class="mr-2"
                     fab
                     dark
                     small
@@ -401,19 +486,19 @@
                     <v-icon center dark> mdi-minus </v-icon></v-btn
                   >
                 </v-flex>
-                <v-flex xs12 12>
-                  <v-btn
-                    :disabled="!isFormValid"
-                    :loading="isLoading"
-                    @click="createApi"
-                    color="primary"
-                    block
-                    >Save</v-btn
-                  >
-                </v-flex>
               </v-layout>
-            </v-form>
-          </v-card>
+            </v-card>
+            <v-flex xs12 12>
+              <v-btn
+                :disabled="!isFormValid"
+                :loading="isLoading"
+                @click="createApi"
+                color="primary"
+                block
+                >Save</v-btn
+              >
+            </v-flex>
+          </v-form>
         </v-container>
       </v-col>
     </v-row>

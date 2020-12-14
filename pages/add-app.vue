@@ -8,10 +8,9 @@
           </h2>
           <div class="line"></div>
           <h4 class="my-6">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut,
-            suscipit a. Debitis placeat asperiores corrupti dolores? Vel
-            voluptatibus aut animi, quas doloribus, itaque molestiae ipsum
-            officia at natus mollitia iure?
+            At this page you can create applications. Within applications you
+            can different APIs related to them. Only Admin and developers are
+            allowed to create, edit, and delete applications.
           </h4>
           <v-btn class="" color="#0087ff" outlined to="/view-apps" nuxt
             ><v-icon>mdi-play</v-icon> See all applications</v-btn

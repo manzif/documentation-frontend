@@ -8,10 +8,9 @@
           </h2>
           <div class="line"></div>
           <h4 class="my-6">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut,
-            suscipit a. Debitis placeat asperiores corrupti dolores? Vel
-            voluptatibus aut animi, quas doloribus, itaque molestiae ipsum
-            officia at natus mollitia iure?
+            At this page you can create an Admin. Only Admin are allowed to
+            create other admins. The admin created will have the same
+            privilegies as other admins.
           </h4>
           <v-btn class="" color="#0087ff" outlined to="/admin/usersview" nuxt
             ><v-icon>mdi-play</v-icon> See all available users</v-btn
